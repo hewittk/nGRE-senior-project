@@ -1,6 +1,9 @@
 """Calculate amounts of genes downregulated and upregulated in initial DEG datasets."""
 
 import pandas as pd
+from matplotlib_venn import venn2, venn2_circles, venn2_unweighted
+from matplotlib_venn import venn3, venn3_circles
+from matplotlib import pyplot as plt
 
 minimum_p_value = 0.001
 
@@ -49,9 +52,19 @@ def find_mutual_genes(list1, list2):
 
     return mutual_genes
 
+def find_unique_genes(list1, list2):
+    """Return list of unique genes between two given gene lists."""
+    unique_list1_genes = []
+
+    for list1_gene in list1:
+        if not(list1_gene in list2):
+            unique_list1_genes.append(list1_gene)
+
+    return unique_list1_genes
+
 
 def main():
-    # write upregulated and downregulated gene names to file
+    # write upregulated and downregulated gene names to files
     dex_upregulated_genes, dex_downregulated_genes = up_down_amounts(dex_vs_vehicle_df)
     write_to_file("ADX_F_DexvsADX_F_Veh", dex_upregulated_genes, dex_downregulated_genes)
 
@@ -61,16 +74,30 @@ def main():
     # Report amount of differential expression before/after estrogen depletion
     print("Before estrogen depletion, total genes upregulated by dexamethasone: ", len(dex_upregulated_genes))
     print("Before estrogen depletion, total genes downregulated by dexamethasone: ", len(dex_downregulated_genes))
+    print()
 
     print("After estrogen depletion, total genes upregulated by dexamethasone: ", len(ovx_dex_upregulated_genes))
     print("After estrogen depletion, total genes downregulated by dexamethasone: ", len(ovx_dex_downregulated_genes))
+    print()
 
     # Report numbers of genes upregulated and downregulated in each group
     mutual_upregulated_genes = find_mutual_genes(dex_upregulated_genes, ovx_dex_upregulated_genes)
     mutual_downregulated_genes = find_mutual_genes(dex_downregulated_genes, ovx_dex_downregulated_genes)
 
-    print("Genes upregulated by dexamethasone in both groups: ", len(mutual_upregulated_genes))
-    print("Genes downregulated by dexamethasone in both groups: ", len(mutual_downregulated_genes))
+    print("Genes upregulated by dexamethasone both before and after estrogen depletion: ", len(mutual_upregulated_genes))
+    print("Genes downregulated by dexamethasone both before and after estrogen depletion: ", len(mutual_downregulated_genes))
+    print()
+
+    ovx_upregulated_genes = find_unique_genes(ovx_dex_upregulated_genes, dex_upregulated_genes)
+    ovx_downregulated_genes = find_unique_genes(ovx_dex_downregulated_genes, dex_downregulated_genes)
+    non_ovx_upregulated_genes = find_unique_genes(dex_upregulated_genes, ovx_dex_upregulated_genes)
+    non_ovx_downregulated_genes = find_unique_genes(dex_downregulated_genes, ovx_dex_downregulated_genes)
+
+    print("Genes only upregulated by dexamethasone after estrogen depletion: ", len(ovx_upregulated_genes))
+    print("Genes only downregulated by dexamethasone after estrogen depletion:  ", len(ovx_downregulated_genes))
+    print("Genes only upregulated by dexamethasone before estrogen depletion: ", len(non_ovx_upregulated_genes))
+    print("Genes only downregulated by dexamethasone before estrogen depletion: ", len(non_ovx_downregulated_genes))
+
 
 if __name__ == "__main__":
     main()
