@@ -1,0 +1,6 @@
+Before estrogen depletion, total genes upregulated by dexamethasone:  2003
+Before estrogen depletion, total genes downregulated by dexamethasone:  1560
+After estrogen depletion, total genes upregulated by dexamethasone:  2560
+After estrogen depletion, total genes downregulated by dexamethasone:  2343
+Genes upregulated by dexamethasone in both groups:  1759
+Genes downregulated by dexamethasone in both groups:  1304
