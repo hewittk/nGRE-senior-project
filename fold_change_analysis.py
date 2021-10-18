@@ -98,6 +98,15 @@ def main():
     print("Genes only upregulated by dexamethasone before estrogen depletion: ", len(non_ovx_upregulated_genes))
     print("Genes only downregulated by dexamethasone before estrogen depletion: ", len(non_ovx_downregulated_genes))
 
+    # create Venn diagrams
+    venn2(subsets = (len(ovx_upregulated_genes), len(non_ovx_upregulated_genes), len(mutual_upregulated_genes)), set_labels = ('OVX_ADX', 'ADX'), set_colors=('purple', 'skyblue'), alpha = 0.5)
+    plt.savefig("images/upregulated.png")
+    plt.show()
+
+    venn2(subsets = (len(ovx_downregulated_genes), len(non_ovx_downregulated_genes), len(mutual_downregulated_genes)), set_labels = ('OVX_ADX', 'ADX'), set_colors=('purple', 'skyblue'), alpha = 0.5)
+    plt.savefig("images/downregulated.png")
+    plt.show()
+
 
 if __name__ == "__main__":
     main()
