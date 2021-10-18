@@ -54,7 +54,7 @@ def find_mutual_genes(list1, list2):
 
 def find_unique_genes(list1, list2):
     """Return list of unique genes between two given gene lists."""
-    
+
     unique_list1_genes = []
 
     for list1_gene in list1:
@@ -101,10 +101,12 @@ def main():
 
     # Create Venn diagrams
     venn2(subsets = (len(ovx_upregulated_genes), len(non_ovx_upregulated_genes), len(mutual_upregulated_genes)), set_labels = ('OVX_ADX', 'ADX'), set_colors=('purple', 'skyblue'), alpha = 0.5)
+    plt.title("Genes downregulated by dexamethasone before and after estrogen treatment")
     plt.savefig("images/upregulated.png")
     plt.show()
 
     venn2(subsets = (len(ovx_downregulated_genes), len(non_ovx_downregulated_genes), len(mutual_downregulated_genes)), set_labels = ('OVX_ADX', 'ADX'), set_colors=('purple', 'skyblue'), alpha = 0.5)
+    plt.title("Genes upregulated by dexamethasone before and after estrogen treatment")
     plt.savefig("images/downregulated.png")
     plt.show()
 
