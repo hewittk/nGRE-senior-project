@@ -29,12 +29,12 @@ def up_down_amounts(DEG_dataframe):
 def write_to_file(treatment, upregulated_genes, downregulated_genes):
     """Write given lists of genes that are upregulated/downregulated to files."""
 
-    with open("primary_gene_calculations/" + treatment + "/upregulated.txt", "w") as file:
+    with open("annotated_gene_datasets/" + treatment + "/upregulated_genes/upregulated.txt", "w") as file:
         for gene_name in upregulated_genes:
             file.write(gene_name)
             file.write("\n")
         file.close()
-    with open("primary_gene_calculations/" + treatment + "/downregulated.txt", "w") as file:
+    with open("annotated_gene_datasets/" + treatment + "/downregulated_genes/downregulated.txt", "w") as file:
         for gene_name in downregulated_genes:
             file.write(gene_name)
             file.write("\n")
@@ -102,12 +102,12 @@ def main():
     # Create Venn diagrams
     venn2(subsets = (len(ovx_upregulated_genes), len(non_ovx_upregulated_genes), len(mutual_upregulated_genes)), set_labels = ('OVX_ADX', 'ADX'), set_colors=('purple', 'skyblue'), alpha = 0.5)
     plt.title("Genes Upregulated by Dexamethasone Before and After Estrogen Depletion")
-    plt.savefig("images/upregulated.png", bbox_inches="tight")
+    plt.savefig("images/venn_diagrams/upregulated.png", bbox_inches="tight")
     plt.show()
 
     venn2(subsets = (len(ovx_downregulated_genes), len(non_ovx_downregulated_genes), len(mutual_downregulated_genes)), set_labels = ('OVX_ADX', 'ADX'), set_colors=('yellow', 'cornflowerblue'), alpha = 0.5)
     plt.title("Genes Downregulated by Dexamethasone Before and After Estrogen Depletion")
-    plt.savefig("images/downregulated.png", bbox_inches="tight")
+    plt.savefig("images/venn_diagrams/downregulated.png", bbox_inches="tight")
     plt.show()
 
 

@@ -1,6 +1,6 @@
 ## Process for retrieval of gene sequences
 
-Chromosome locations of the genes, adjusted for the proper amount of base pairs upstream and downstream, are needed to get the proper gene sequences. To get information about the genes' transcription start sequences, two files containing information about the upregulated and downregulated genes, respectively, were downloaded from the [UCSC table browser](https://genome.ucsc.edu/cgi-bin/hgTables). A small subset of genes were not included in these files due to the names not being recognized by the UCSC database.
+Chromosome locations of the genes, adjusted for the proper amount of base pairs upstream and downstream, are needed to get the proper gene sequences. To get information about the genes' transcription start sequences, two files containing information about the upregulated and downregulated genes, respectively, were downloaded from the [UCSC table browser](https://genome.ucsc.edu/cgi-bin/hgTables). A small subset of genes were not included in these files due to the names not being recognized by the UCSC database. The locations of these genes, 
 
 `[regulation]_genes.txt`: genes in DEG file that were upregulated (fold change > 1) or downregulated (fold_change < 1)
 
