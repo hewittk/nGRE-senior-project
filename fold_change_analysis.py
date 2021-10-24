@@ -101,13 +101,13 @@ def main():
 
     # Create Venn diagrams
     venn2(subsets = (len(ovx_upregulated_genes), len(non_ovx_upregulated_genes), len(mutual_upregulated_genes)), set_labels = ('OVX_ADX', 'ADX'), set_colors=('purple', 'skyblue'), alpha = 0.5)
-    plt.title("Genes downregulated by dexamethasone before and after estrogen treatment")
-    plt.savefig("images/upregulated.png")
+    plt.title("Genes Upregulated by Dexamethasone Before and After Estrogen Depletion")
+    plt.savefig("images/upregulated.png", bbox_inches="tight")
     plt.show()
 
-    venn2(subsets = (len(ovx_downregulated_genes), len(non_ovx_downregulated_genes), len(mutual_downregulated_genes)), set_labels = ('OVX_ADX', 'ADX'), set_colors=('purple', 'skyblue'), alpha = 0.5)
-    plt.title("Genes upregulated by dexamethasone before and after estrogen treatment")
-    plt.savefig("images/downregulated.png")
+    venn2(subsets = (len(ovx_downregulated_genes), len(non_ovx_downregulated_genes), len(mutual_downregulated_genes)), set_labels = ('OVX_ADX', 'ADX'), set_colors=('yellow', 'cornflowerblue'), alpha = 0.5)
+    plt.title("Genes Downregulated by Dexamethasone Before and After Estrogen Depletion")
+    plt.savefig("images/downregulated.png", bbox_inches="tight")
     plt.show()
 
 
