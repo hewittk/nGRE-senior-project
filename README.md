@@ -1,5 +1,12 @@
 # Deriving lists of upregulated/downregulated genes
 
+The script `fold_change_analysis.py` was used to parse the original differentially expressed genes datasets for which genes that had a satisfactory p value were upregulated versus downregulated by their treatments based on their fold change shown in the datasets. The minimum p value threshold was set to 0.001. Genes that had a fold change of greater than 1 were determined to be upregulated and genes that had a fold change of less than 1 were determined to be downregulated.
+
+### Original gene gene datasets
+
+`primary_DEG_datasets/ADX_F_DexvsADX_F_Veh_results_STAR_FeatureCount_DESeq2_annotation_p.01.xlsx - ADX_F_DexvsADX_F_Veh_results_ST.csv`:
+`primary_DEG_datasets/OVX_ADX_F_DexvsOVX_ADX_F_Veh_results_STAR_FeatureCount_DESeq2_annotation_p.01.xlsx - OVX_ADX_F_DexvsOVX_ADX_F_Veh_re.csv"`:
+
 ### Files derived from table browser
 
 `upregulated_output_with_gene_names.tsv`: information about list of upregulated genes from given treatment from UCSC table browser
