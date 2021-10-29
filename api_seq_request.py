@@ -11,19 +11,22 @@ def geneCoordinates(column):
     transcriptionStart = int(genes_df["mm10.knownGene.txStart"][column]) - 30000
     transcriptionEnd = int(genes_df["mm10.knownGene.txEnd"][column]) + 5000
     geneName = genes_df["mm10.kgXref.geneSymbol"][column] + "_" + genes_df["#mm10.knownGene.name"][column]
+    if geneName[len(geneName) - 1] == 0:
+        geneName = geneName[:len(geneName) - 1]
+    print("geneName: ", geneName)
 
     return chromosome, transcriptionStart, transcriptionEnd, geneName
 
 def request(chromosome, startCoordinate, endCoordinate):
     response = requests.get("http://api.genome.ucsc.edu/getData/sequence?genome=mm10;chrom=" + str(chromosome) + ";start=" + str(startCoordinate) + ";end=" + str(endCoordinate))
-
+    print("Status Code: ", response.status_code)
     json_response = response.json()
 
     return json_response['dna']
 
 def write_to_file(gene_name, string):
-
     # make file for gene in gene sequences directory
+    print("Writing to file: ", gene_name)
     os.mkdir("gene_sequences/" + gene_name)
     file_name = gene_name + ".txt"
     f = open("gene_sequences/" + gene_name + "/" + file_name, "x")
@@ -36,10 +39,14 @@ def write_to_file(gene_name, string):
 
 def main():
     start = time.time()
-    for i in range(len(genes_df)):
+    for i in range(10):
         chromosome, startCoordinate, endCoordinate, geneName = geneCoordinates(i)
-        gene_json = request(chromosome, startCoordinate, endCoordinate)
-        write_to_file(geneName, gene_json)
+        if not(os.path.isdir("gene_sequences/" + geneName)):
+            print("Adding new gene sequence file")
+            gene_json = request(chromosome, startCoordinate, endCoordinate)
+            write_to_file(geneName, gene_json)
+        else:
+            print("Gene sequence file already exists")
     end = time.time()
     print("Total runtime: ", end - start)
 
