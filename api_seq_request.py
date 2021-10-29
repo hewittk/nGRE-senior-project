@@ -4,7 +4,7 @@ import json
 import time
 import pandas as pd
 
-genes_df = pd.read_csv("annotated_gene_datasets/ADX_F_DexvsADX_F_Veh/downregulated_genes/downregulated_output_with_gene_names.tsv", sep = "\t")
+genes_df = pd.read_csv("annotated_gene_datasets/OVX_ADX_F_DexvsOVX_ADX_F_Veh/downregulated_genes/downregulated_output_with_gene_names.tsv", sep = "\t")
 
 def geneCoordinates(column):
     chromosome = genes_df["mm10.knownGene.chrom"][column]
@@ -39,7 +39,7 @@ def write_to_file(gene_name, string):
 
 def main():
     start = time.time()
-    for i in range(10):
+    for i in range(len(genes_df)):
         chromosome, startCoordinate, endCoordinate, geneName = geneCoordinates(i)
         if not(os.path.isdir("gene_sequences/" + geneName)):
             print("Adding new gene sequence file")
@@ -47,6 +47,7 @@ def main():
             write_to_file(geneName, gene_json)
         else:
             print("Gene sequence file already exists")
+        print()
     end = time.time()
     print("Total runtime: ", end - start)
 
