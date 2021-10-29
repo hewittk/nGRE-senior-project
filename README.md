@@ -4,8 +4,8 @@ The script `fold_change_analysis.py` was used to parse the original differential
 
 ### Original gene gene datasets
 
-`primary_DEG_datasets/ADX_F_DexvsADX_F_Veh_results_STAR_FeatureCount_DESeq2_annotation_p.01.xlsx - ADX_F_DexvsADX_F_Veh_results_ST.csv`:
-`primary_DEG_datasets/OVX_ADX_F_DexvsOVX_ADX_F_Veh_results_STAR_FeatureCount_DESeq2_annotation_p.01.xlsx - OVX_ADX_F_DexvsOVX_ADX_F_Veh_re.csv"`:
+`primary_DEG_datasets/ADX_F_DexvsADX_F_Veh_results_STAR_FeatureCount_DESeq2_annotation_p.01.xlsx - ADX_F_DexvsADX_F_Veh_results_ST.csv`: CSV copy of excel file shared containing the information about genes in mice that underwent adrenalectomy that were differentially expressed in the mice that were treated with dexamethasone eye drops compared to mice that were treated with the artificial tears vehicle
+`primary_DEG_datasets/OVX_ADX_F_DexvsOVX_ADX_F_Veh_results_STAR_FeatureCount_DESeq2_annotation_p.01.xlsx - OVX_ADX_F_DexvsOVX_ADX_F_Veh_re.csv"`: CSV copy of excel file shared containing the information about genes in mice that underwent both ovariectomy and adrenalectomy that were differentially expressed in the mice that were treated with dexamethasone eye drops in comparison to those that were treated with vehicle artificial tears
 
 ### Files derived from table browser
 
