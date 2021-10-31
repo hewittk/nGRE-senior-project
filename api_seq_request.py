@@ -4,7 +4,7 @@ import json
 import time
 import pandas as pd
 
-genes_df = pd.read_csv("annotated_gene_datasets/OVX_ADX_F_DexvsOVX_ADX_F_Veh/downregulated_genes/downregulated_output_with_gene_names.tsv", sep = "\t")
+genes_df = pd.read_csv("annotated_gene_datasets/OVX_ADX_F_DexvsOVX_ADX_F_Veh/upregulated_genes/upregulated_output_with_gene_names.tsv", sep = "\t")
 
 def geneCoordinates(column):
     chromosome = genes_df["mm10.knownGene.chrom"][column]
