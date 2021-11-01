@@ -10,9 +10,9 @@ nGRE_consensus_sequence = "CTCCGGAGA"
 def localAlignment(gene_sequence, gene_id):
 	alignment_start = time.time()
 	# local alignment with match score of 3, mismatch penalty of -1.5, gap opening penalty of -.5, gap extension penalty of -5
-	myAlignments = pairwise2.align.localms(gene_sequence, nGRE_consensus_sequence, 2, -1, -.25, -.25)
+	myAlignments = pairwise2.align.localms(gene_sequence, nGRE_consensus_sequence, 3, -1, -.2, -.2)
 
-	with open("nGRE_sample_parse_output/parse_" + gene_id + ".txt", "w") as file:
+	with open("nGRE_sample_parse_output/parse_" + gene_id + ".txt", "a") as file:
 		for nGRE_alignment in myAlignments:
 			file.write(str(nGRE_alignment))
 
@@ -42,8 +42,8 @@ def regexSearch(gene_sequence, gene_id):
 def main():
 	start = time.time()
 
-	file = open("gene_sequences/Anapc16_ENSMUST00000182912.1/Anapc16_ENSMUST00000182912.1.txt")
-	gene_id = "Anapc16_ENSMUST00000182912.1"
+	file = open("gene_sequences/Ccnd2_ENSMUST00000201637.1/Ccnd2_ENSMUST00000201637.1.txt")
+	gene_id = "Ccnd2_ENSMUST00000201637.1"
 	interest_gene = file.read()
 
 	localAlignment(interest_gene, gene_id)
