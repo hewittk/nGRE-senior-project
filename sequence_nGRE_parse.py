@@ -22,9 +22,11 @@ def localAlignment(gene_sequence, gene_id):
 
 
 def regexSearch(gene_sequence, gene_id):
+	"""Find sequences and positions of relative matches to nGRE consensus sequence in gene."""
+
 	regex_start = time.time()
 	# find matches
-	possible_matches = regex.findall("[Cc][Tt][Cc][Cc][TAGCtagc]?[TAGCtagc]?[TAGCtagc]?[Gg][Gg][Aa][Gg][Aa]{e<=3}", gene_sequence)
+	possible_matches = regex.findall("([Cc][Tt][Cc][Cc][TAGCtagc]?[TAGCtagc]?[TAGCtagc]?[Gg][Gg][Aa][Gg][Aa]){e<=3}", gene_sequence)
 
 	print(possible_matches)
 
