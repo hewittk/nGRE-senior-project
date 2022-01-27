@@ -44,7 +44,7 @@ A small subset of genes were not included in these files due to the names not be
 
  `mm10.knownGene.alignID`: "Unique identifier (GENCODE transcript ID for GENCODE Basic)" (according to [Table Browser](https://genome.ucsc.edu/cgi-bin/hgTables))
 
- `mm10.kgXref.geneSymbol`: Common gene name that is same as name given in originral `upregulated.txt`/`downregulated.txt` files
+ `mm10.kgXref.geneSymbol`: Common gene name that is same as name given in original `upregulated.txt`/`downregulated.txt` files
 
 
 
