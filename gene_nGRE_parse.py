@@ -8,6 +8,8 @@ from Bio.Seq import Seq
 nGRE_consensus_sequence = "CTCCGGAGA"
 
 def localAlignment(gene_sequence, gene_id):
+	"""Perform local alignment on gene sequences."""
+
 	alignment_start = time.time()
 	# local alignment with match score of 3, mismatch penalty of -1.5, gap opening penalty of -.2, gap extension penalty of -.2
 	myAlignments = pairwise2.align.localms(gene_sequence, nGRE_consensus_sequence, 3, -1, -.2, -.2)
@@ -32,13 +34,25 @@ def regexSearch(gene_sequence, gene_id):
 
 	# obtain information about location and number of errors in each nGRE
 	for nGRE_sequence in possible_matches:
+
 		# obtain potential nGRE sequence's location in gene sequence
 		pos_information = regex.search(nGRE_sequence, gene_sequence)
 		print(pos_information)
+		# print(regex.findall(r"\(\d+,", str(pos_information)))
+
+		# retrieve and store start/end coordinates of nGRE on chromosome
+		start_coordinate_regex = regex.findall(r"\(\d+,", str(pos_information))
+		start_coordinate_element = start_coordinate_regex[0]
+		print("start coordinate: ", start_coordinate_element[1:6])
+		
+		end_coordinate_regex = regex.findall(r" \d+\)", str(pos_information))
+		end_coordinate_element = end_coordinate_regex[0]
+		print("end coordinate: ", end_coordinate_element[1:6])
+		print()
 
 		# compare to perfect nGRE for error counts
 		comparison = (regex.search(r"([Cc][Tt][Cc][Cc][TAGCtagc]?[TAGCtagc]?[TAGCtagc]?[Gg][Gg][Aa][Gg][Aa]){e<=3}", nGRE_sequence))
-		print(comparison.fuzzy_counts)
+		# print(comparison.fuzzy_counts)
 
 	print()
 	# starts = possible_matches.starts()
