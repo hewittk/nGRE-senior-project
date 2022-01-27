@@ -40,21 +40,25 @@ def regexSearch(gene_sequence, gene_id):
 		print(pos_information)
 		# print(regex.findall(r"\(\d+,", str(pos_information)))
 
-		# retrieve and store start/end coordinates of nGRE on chromosome
+		# retrieve and store start/end coordinates of nGRE
 		start_coordinate_regex = regex.findall(r"\(\d+,", str(pos_information))
 		start_coordinate_element = start_coordinate_regex[0]
 		print("start coordinate: ", start_coordinate_element[1:6])
-		
+
 		end_coordinate_regex = regex.findall(r" \d+\)", str(pos_information))
 		end_coordinate_element = end_coordinate_regex[0]
 		print("end coordinate: ", end_coordinate_element[1:6])
-		print()
 
 		# compare to perfect nGRE for error counts
 		comparison = (regex.search(r"([Cc][Tt][Cc][Cc][TAGCtagc]?[TAGCtagc]?[TAGCtagc]?[Gg][Gg][Aa][Gg][Aa]){e<=3}", nGRE_sequence))
-		# print(comparison.fuzzy_counts)
+		print(comparison.fuzzy_counts)
+		mutation_counts = comparison.fuzzy_counts
+		mismatch_count = mutation_counts[0]
+		insertion_count = mutation_counts[1]
+		deletion_count = mutation_counts[2]
+		print(mismatch_count, insertion_count, deletion_count)
 
-	print()
+		print()
 	# starts = possible_matches.starts()
 	# print(starts)
 	# account for errors
