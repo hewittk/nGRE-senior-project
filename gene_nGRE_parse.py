@@ -118,7 +118,8 @@ def csv_parse(treatment, regulation):
 		# print(nGRE_table)
 		# print()
 		potential_nGREs = regexSearch(interest_gene_sequence, gene_id, gene_chromosome, gene_strand)
-		print(potential_nGREs)
+		for potential_nGRE in potential_nGREs:
+			nGRE_table = nGRE_table.append(potential_nGRE, ignore_index = True)
 
 	nGRE_table.to_csv("test.csv")
 
