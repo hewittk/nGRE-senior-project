@@ -33,7 +33,7 @@ def regexSearch(gene_sequence, gene_id, chromosome, strand):
 	# find matches
 	print("Searching for nGREs in ", gene_id)
 	possible_matches = regex.findall("([Cc][Tt][Cc][Cc][TAGCtagc]?[TAGCtagc]?[TAGCtagc]?[Gg][Gg][Aa][Gg][Aa]){e<=2}", gene_sequence)
-	print(possible_matches)
+	# print(possible_matches)
 
 	# print(possible_matches)
 
@@ -47,16 +47,16 @@ def regexSearch(gene_sequence, gene_id, chromosome, strand):
 
 		# obtain potential nGRE sequence's location in gene sequence
 		pos_information = regex.search(nGRE_sequence, gene_sequence)
-		# print(pos_information)
+		print(pos_information)
 
 		# retrieve and store start/end coordinates of nGRE
-		start_coordinate_regex = regex.findall(r"\(\d+,", str(pos_information))
-		start_coordinate_element = start_coordinate_regex[0]
-		start_coordinate = start_coordinate_element[1:6]
+		start_coordinate_regex = regex.findall(r"\(\d+,", str(pos_information))[0]
+		start_coordinate = int (regex.findall("\d+", str(start_coordinate_regex))[0])
 
-		end_coordinate_regex = regex.findall(r" \d+\)", str(pos_information))
-		end_coordinate_element = end_coordinate_regex[0]
-		end_coordinate = end_coordinate_element[1:6]
+		# start_coordinate = start_coordinate_element[1:len(start_coordinate_element)]
+
+		end_coordinate_regex = regex.findall(r" \d+\)", str(pos_information))[0]
+		end_coordinate = int (regex.findall("\d+", str(end_coordinate_regex))[0])
 
 		# compare to perfect nGRE for error counts
 		comparison = (regex.search(r"([Cc][Tt][Cc][Cc][TAGCtagc]?[TAGCtagc]?[TAGCtagc]?[Gg][Gg][Aa][Gg][Aa]){e<=2}", nGRE_sequence))
@@ -80,7 +80,7 @@ def regexSearch(gene_sequence, gene_id, chromosome, strand):
 		# nGRE_sites = nGRE_sites.append(nGRE_information_dict, ignore_index = True)
 		# print(nGRE_information_dict)
 		# print(nGRE_sites)
-		print(nGRE_information_dict)
+		# print(nGRE_information_dict)
 		print()
 		nGRE_list.append(nGRE_information_dict)
 		# nGRE_information_dict.clear()
