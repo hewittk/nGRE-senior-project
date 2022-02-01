@@ -39,8 +39,11 @@ def regexSearch(gene_sequence, gene_id, chromosome, strand):
 
 	# obtain information about location and number of errors in each nGRE
 	nGRE_sites = pd.DataFrame(columns = ["gene_id", "chromosome", "nGRE_sequence", "start_site", "end_site", "mismatch_mutations", "insertion_mutations", "deletion_mutations"])
-	potential_nGRE_dict = {}
+
+	nGRE_list = []
+
 	for nGRE_sequence in possible_matches:
+		nGRE_information_dict = {}
 
 		# obtain potential nGRE sequence's location in gene sequence
 		pos_information = regex.search(nGRE_sequence, gene_sequence)
@@ -65,19 +68,22 @@ def regexSearch(gene_sequence, gene_id, chromosome, strand):
 		# print(mismatch_count, insertion_count, deletion_count)
 
 		# assemble dictionary of nGRE information
-		potential_nGRE_dict["gene_id"] = gene_id
-		potential_nGRE_dict["chromosome"] = chromosome
-		potential_nGRE_dict["nGRE_sequence"] = nGRE_sequence
-		potential_nGRE_dict["start_site"] = start_coordinate
-		potential_nGRE_dict["end_site"] = end_coordinate
-		potential_nGRE_dict["mismatch_mutations"] = mismatch_count
-		potential_nGRE_dict["insertion_mutations"] = insertion_count
-		potential_nGRE_dict["deletion_mutations"] = deletion_count
+		nGRE_information_dict["gene_id"] = gene_id
+		nGRE_information_dict["chromosome"] = chromosome
+		nGRE_information_dict["nGRE_sequence"] = nGRE_sequence
+		nGRE_information_dict["start_site"] = start_coordinate
+		nGRE_information_dict["end_site"] = end_coordinate
+		nGRE_information_dict["mismatch_mutations"] = mismatch_count
+		nGRE_information_dict["insertion_mutations"] = insertion_count
+		nGRE_information_dict["deletion_mutations"] = deletion_count
 
-		nGRE_sites = nGRE_sites.append(potential_nGRE_dict, ignore_index = True)
-		# print(potential_nGRE_dict)
+		# nGRE_sites = nGRE_sites.append(nGRE_information_dict, ignore_index = True)
+		# print(nGRE_information_dict)
 		# print(nGRE_sites)
-		potential_nGRE_dict.clear()
+		print(nGRE_information_dict)
+		print()
+		nGRE_list.append(nGRE_information_dict)
+		# nGRE_information_dict.clear()
 
 	regex_end = time.time()
 	regex_runtime = regex_end - regex_start
@@ -85,7 +91,7 @@ def regexSearch(gene_sequence, gene_id, chromosome, strand):
 	# print(nGRE_sites)
 	print()
 
-	return nGRE_sites
+	return nGRE_list
 
 
 def csv_parse(treatment, regulation):
@@ -94,7 +100,7 @@ def csv_parse(treatment, regulation):
 
 	nGRE_table = pd.DataFrame(columns = ["gene_id", "chromosome", "nGRE_sequence", "start_site", "end_site", "mismatch_mutations", "insertion_mutations", "deletion_mutations"])
 
-	for column in range(len(genes_df)):
+	for column in range(0, 10):
 		# print(column)
 		gene_id = genes_df["mm10.kgXref.geneSymbol"][column] + "_" + genes_df["#mm10.knownGene.name"][column]
 		# print(gene_id)
@@ -104,8 +110,15 @@ def csv_parse(treatment, regulation):
 		file = open("gene_sequences/" + gene_id + "/" + gene_id + ".txt")
 		interest_gene_sequence = file.read()
 
+		"""
 		potential_nGRE_dataframe = regexSearch(interest_gene_sequence, gene_id, gene_chromosome, gene_strand)
-		nGRE_table.append(potential_nGRE_dataframe)
+		print(potential_nGRE_dataframe)
+		nGRE_table.append(potential_nGRE_dataframe, ignore_index=True)
+		"""
+		# print(nGRE_table)
+		# print()
+		potential_nGREs = regexSearch(interest_gene_sequence, gene_id, gene_chromosome, gene_strand)
+		print(potential_nGREs)
 
 	nGRE_table.to_csv("test.csv")
 
