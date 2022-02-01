@@ -31,7 +31,9 @@ def regexSearch(gene_sequence, gene_id, chromosome, strand):
 
 	regex_start = time.time()
 	# find matches
-	possible_matches = regex.findall("([Cc][Tt][Cc][Cc][TAGCtagc]?[TAGCtagc]?[TAGCtagc]?[Gg][Gg][Aa][Gg][Aa]){e<=3}", gene_sequence)
+	print("Searching for nGREs in ", gene_id)
+	possible_matches = regex.findall("([Cc][Tt][Cc][Cc][TAGCtagc]?[TAGCtagc]?[TAGCtagc]?[Gg][Gg][Aa][Gg][Aa]){e<=2}", gene_sequence)
+	print(possible_matches)
 
 	# print(possible_matches)
 
@@ -54,7 +56,7 @@ def regexSearch(gene_sequence, gene_id, chromosome, strand):
 		end_coordinate = end_coordinate_element[1:6]
 
 		# compare to perfect nGRE for error counts
-		comparison = (regex.search(r"([Cc][Tt][Cc][Cc][TAGCtagc]?[TAGCtagc]?[TAGCtagc]?[Gg][Gg][Aa][Gg][Aa]){e<=3}", nGRE_sequence))
+		comparison = (regex.search(r"([Cc][Tt][Cc][Cc][TAGCtagc]?[TAGCtagc]?[TAGCtagc]?[Gg][Gg][Aa][Gg][Aa]){e<=2}", nGRE_sequence))
 		# print(comparison.fuzzy_counts)
 		mutation_counts = comparison.fuzzy_counts
 		mismatch_count = mutation_counts[0]
@@ -74,7 +76,7 @@ def regexSearch(gene_sequence, gene_id, chromosome, strand):
 
 		nGRE_sites = nGRE_sites.append(potential_nGRE_dict, ignore_index = True)
 		# print(potential_nGRE_dict)
-		print(nGRE_sites)
+		# print(nGRE_sites)
 		potential_nGRE_dict.clear()
 
 	regex_end = time.time()
@@ -83,12 +85,14 @@ def regexSearch(gene_sequence, gene_id, chromosome, strand):
 	# print(nGRE_sites)
 	print()
 
-	return int(start_coordinate), int(end_coordinate), mismatch_count, insertion_count, deletion_count
+	return nGRE_sites
 
 
 def csv_parse(treatment, regulation):
-	genes_df = pd.read_csv("annotated_gene_datasets/" + treatment + "/" + regulation + "_genes/" + regulation + "_output_with_gene_names.tsv", sep = "\t")
+	genes_df = pd.read_csv("annotated_gene_datasets/" + treatment + "/" + regulation + "_genes/" + regulation + "_output_with_gene_names_known_sequences.tsv", sep = "\t")
 	print("Test")
+
+	nGRE_table = pd.DataFrame(columns = ["gene_id", "chromosome", "nGRE_sequence", "start_site", "end_site", "mismatch_mutations", "insertion_mutations", "deletion_mutations"])
 
 	for column in range(len(genes_df)):
 		# print(column)
@@ -100,7 +104,11 @@ def csv_parse(treatment, regulation):
 		file = open("gene_sequences/" + gene_id + "/" + gene_id + ".txt")
 		interest_gene_sequence = file.read()
 
-		print(regexSearch(interest_gene_sequence, gene_id, gene_chromosome, gene_strand))
+		potential_nGRE_dataframe = regexSearch(interest_gene_sequence, gene_id, gene_chromosome, gene_strand)
+		nGRE_table.append(potential_nGRE_dataframe)
+
+	nGRE_table.to_csv("test.csv")
+
 
 def main():
 	start = time.time()
