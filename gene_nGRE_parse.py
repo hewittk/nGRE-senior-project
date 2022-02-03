@@ -69,27 +69,30 @@ def regexSearch(gene_sequence, gene_id, chromosome, strand):
 
 
 def csv_parse(treatment, regulation):
-	genes_df = pd.read_csv("annotated_gene_datasets/" + treatment + "/" + regulation + "_genes/" + regulation + "_output_with_gene_names_known_sequences.tsv", sep = "\t")
+	"""Parse each gene for nGREs and record results in csv."""
 
+	genes_df = pd.read_csv("annotated_gene_datasets/" + treatment + "/" + regulation + "_genes/" + regulation + "_output_with_gene_names_known_sequences.tsv", sep = "\t")
 
 	for column in range(len(genes_df)):
 		gene_id = genes_df["mm10.kgXref.geneSymbol"][column] + "_" + genes_df["#mm10.knownGene.name"][column]
 		gene_chromosome = genes_df["mm10.knownGene.chrom"][column]
 		gene_strand = genes_df["mm10.knownGene.strand"][column]
 
+		# read sequence of given gene
 		file = open("gene_sequences/" + gene_id + "/" + gene_id + ".txt")
 		interest_gene_sequence = file.read()
 
+		# record potential nGREs found in given gene sequence
 		potential_nGREs = regexSearch(interest_gene_sequence, gene_id, gene_chromosome, gene_strand)
 		potential_nGREs.to_csv("test.csv", mode="a", index=False, header=False)
 
 
 def main():
+
 	start = time.time()
-
 	csv_parse("ADX_F_DexvsADX_F_Veh", "upregulated")
-
 	end = time.time()
+
 	runtime = end - start
 	print("Total runtime: {} seconds".format(runtime))
 
