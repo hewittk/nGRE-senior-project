@@ -1,196 +1,115 @@
-import time
-import regex
-import Bio
-from Bio import pairwise2
-from Bio.Seq import Seq
+"""Calculate amounts of genes downregulated and upregulated in initial DEG datasets."""
 
 import pandas as pd
-<<<<<<< HEAD
+from matplotlib_venn import venn2, venn2_circles, venn2_unweighted
+from matplotlib_venn import venn3, venn3_circles
+from matplotlib import pyplot as plt
 
-nGRE_consensus_sequence = "CTCCGGAGA"
+minimum_p_value = 0.001
 
+dex_vs_vehicle_df = pd.read_csv("primary_DEG_datasets/ADX_F_DexvsADX_F_Veh_results_STAR_FeatureCount_DESeq2_annotation_p.01.xlsx - ADX_F_DexvsADX_F_Veh_results_ST.csv")
+ovx_dex_vs_vehicle_df = pd.read_csv("primary_DEG_datasets/OVX_ADX_F_DexvsOVX_ADX_F_Veh_results_STAR_FeatureCount_DESeq2_annotation_p.01.xlsx - OVX_ADX_F_DexvsOVX_ADX_F_Veh_re.csv")
 
-=======
+def up_down_amounts(DEG_dataframe):
+    """Return list of genes that are upregulated/downregulated based on fold change."""
 
+    upregulated_genes = []
+    downregulated_genes = []
 
+    for index, row in DEG_dataframe.iterrows():
+        if(row['pvalue']) < minimum_p_value:
+            if(row['Fold_Change']) > 1:
+                upregulated_genes.append(row['Gene_Name'])
+            elif(row['Fold_Change']) < 1:
+                downregulated_genes.append(row['Gene_Name'])
 
-nGRE_consensus_sequence = "CTCCGGAGA"
-
-def localAlignment(gene_sequence, gene_id):
-	"""Perform local alignment on gene sequences."""
-
-	alignment_start = time.time()
-	# local alignment with match score of 3, mismatch penalty of -1.5, gap opening penalty of -.2, gap extension penalty of -.2
-	myAlignments = pairwise2.align.localms(gene_sequence, nGRE_consensus_sequence, 3, -1, -.2, -.2)
-
-	with open("nGRE_sample_parse_output/parse_" + gene_id + ".txt", "a") as file:
-		for nGRE_alignment in myAlignments:
-			file.write(str(nGRE_alignment))
-
-	alignment_end = time.time()
-	alignment_runtime = alignment_end - alignment_start
-	print("Local alignment finished, total runtime: {} seconds".format(alignment_runtime))
+    return upregulated_genes, downregulated_genes
 
 
->>>>>>> 2186d65a55acd86563de23c580c4affbb6f97760
-def regexSearch(gene_sequence, gene_id, chromosome, strand):
-	"""Find sequences and positions of relative matches to nGRE consensus sequence in gene."""
+def write_to_file(treatment, upregulated_genes, downregulated_genes):
+    """Write given lists of genes that are upregulated/downregulated to files."""
 
-	regex_start = time.time()
-	# find matches
-	print("Searching for nGREs in ", gene_id)
-	possible_matches = regex.findall("([Cc][Tt][Cc][Cc][TAGCtagc]?[TAGCtagc]?[TAGCtagc]?[Gg][Gg][Aa][Gg][Aa]){e<=2}", gene_sequence)
-<<<<<<< HEAD
-=======
-	# print(possible_matches)
+    with open("annotated_gene_datasets/" + treatment + "/upregulated_genes/upregulated.txt", "w") as file:
+        for gene_name in upregulated_genes:
+            file.write(gene_name)
+            file.write("\n")
+        file.close()
+    with open("annotated_gene_datasets/" + treatment + "/downregulated_genes/downregulated.txt", "w") as file:
+        for gene_name in downregulated_genes:
+            file.write(gene_name)
+            file.write("\n")
+        file.close()
 
-	# print(possible_matches)
->>>>>>> 2186d65a55acd86563de23c580c4affbb6f97760
+def find_mutual_genes(list1, list2):
+    """Return list of genes common between two given gene lists."""
 
-	# obtain information about location and number of errors in each nGRE
-	nGRE_sites = pd.DataFrame(columns = ["gene_id", "chromosome", "nGRE_sequence", "start_site", "end_site", "mismatch_mutations", "insertion_mutations", "deletion_mutations"])
+    mutual_genes = []
 
-	nGRE_list = []
+    for list1_gene in list1:
+        for list2_gene in list2:
+            if(list1_gene == list2_gene):
+                mutual_genes.append(list1_gene)
 
-	for nGRE_sequence in possible_matches:
-		nGRE_information_dict = {}
+    return mutual_genes
 
-		# obtain potential nGRE sequence's location in gene sequence
-		pos_information = regex.search(nGRE_sequence, gene_sequence)
+def find_unique_genes(list1, list2):
+    """Return list of unique genes between two given gene lists."""
 
-		# retrieve and store start/end coordinates of nGRE
-		start_coordinate_regex = regex.findall(r"\(\d+,", str(pos_information))[0]
-		start_coordinate = int (regex.findall("\d+", str(start_coordinate_regex))[0])
-<<<<<<< HEAD
-		end_coordinate_regex = regex.findall(r" \d+\)", str(pos_information))[0]
-		end_coordinate = int (regex.findall("\d+", str(end_coordinate_regex))[0])
+    unique_list1_genes = []
 
-		# compare to perfect nGRE for error counts
-		comparison = (regex.search(r"((?e)[Cc][Tt][Cc][Cc][TAGCtagc]?[TAGCtagc]?[TAGCtagc]?[Gg][Gg][Aa][Gg][Aa]){e<=2}", nGRE_sequence))
-=======
+    for list1_gene in list1:
+        if not(list1_gene in list2):
+            unique_list1_genes.append(list1_gene)
 
-		# start_coordinate = start_coordinate_element[1:len(start_coordinate_element)]
-
-		end_coordinate_regex = regex.findall(r" \d+\)", str(pos_information))[0]
-		end_coordinate = int (regex.findall("\d+", str(end_coordinate_regex))[0])
-
-		# compare to perfect nGRE for error counts
-		comparison = (regex.search(r"([Cc][Tt][Cc][Cc][TAGCtagc]?[TAGCtagc]?[TAGCtagc]?[Gg][Gg][Aa][Gg][Aa]){e<=2}", nGRE_sequence))
-		# print(comparison.fuzzy_counts)
->>>>>>> 2186d65a55acd86563de23c580c4affbb6f97760
-		mutation_counts = comparison.fuzzy_counts
-		mismatch_count = mutation_counts[0]
-		insertion_count = mutation_counts[1]
-		deletion_count = mutation_counts[2]
-<<<<<<< HEAD
-		total_mutations = mismatch_count + insertion_count + deletion_count
-=======
-		# print(mismatch_count, insertion_count, deletion_count)
->>>>>>> 2186d65a55acd86563de23c580c4affbb6f97760
-
-		# assemble dictionary of nGRE information
-		nGRE_information_dict["gene_id"] = gene_id
-		nGRE_information_dict["chromosome"] = chromosome
-		nGRE_information_dict["nGRE_sequence"] = nGRE_sequence
-		nGRE_information_dict["start_site"] = start_coordinate
-		nGRE_information_dict["end_site"] = end_coordinate
-<<<<<<< HEAD
-		nGRE_information_dict["mutations"] = total_mutations
-=======
->>>>>>> 2186d65a55acd86563de23c580c4affbb6f97760
-		nGRE_information_dict["mismatch_mutations"] = mismatch_count
-		nGRE_information_dict["insertion_mutations"] = insertion_count
-		nGRE_information_dict["deletion_mutations"] = deletion_count
-
-		# nGRE_sites = nGRE_sites.append(nGRE_information_dict, ignore_index = True)
-<<<<<<< HEAD
-=======
-		# print(nGRE_information_dict)
-		# print(nGRE_sites)
-		# print(nGRE_information_dict)
-		print()
->>>>>>> 2186d65a55acd86563de23c580c4affbb6f97760
-		nGRE_list.append(nGRE_information_dict)
-		# nGRE_information_dict.clear()
-
-	regex_end = time.time()
-	regex_runtime = regex_end - regex_start
-	print("Regex search completed, total runtime: {} seconds".format(regex_runtime))
-<<<<<<< HEAD
-
-	nGRE_table = pd.DataFrame(columns = ["gene_id", "chromosome", "nGRE_sequence", "start_site", "end_site", "mutations", "mismatch_mutations", "insertion_mutations", "deletion_mutations"])
-	for nGRE in nGRE_list:
-		nGRE_table = nGRE_table.append(nGRE, ignore_index = True)
-
-	return nGRE_table
-=======
-	# print(nGRE_sites)
-	print()
-
-	return nGRE_list
->>>>>>> 2186d65a55acd86563de23c580c4affbb6f97760
-
-
-def csv_parse(treatment, regulation):
-	genes_df = pd.read_csv("annotated_gene_datasets/" + treatment + "/" + regulation + "_genes/" + regulation + "_output_with_gene_names_known_sequences.tsv", sep = "\t")
-<<<<<<< HEAD
-
-
-	for column in range(len(genes_df)):
-		gene_id = genes_df["mm10.kgXref.geneSymbol"][column] + "_" + genes_df["#mm10.knownGene.name"][column]
-=======
-	print("Test")
-
-	nGRE_table = pd.DataFrame(columns = ["gene_id", "chromosome", "nGRE_sequence", "start_site", "end_site", "mismatch_mutations", "insertion_mutations", "deletion_mutations"])
-
-	for column in range(0, 10):
-		# print(column)
-		gene_id = genes_df["mm10.kgXref.geneSymbol"][column] + "_" + genes_df["#mm10.knownGene.name"][column]
-		# print(gene_id)
->>>>>>> 2186d65a55acd86563de23c580c4affbb6f97760
-		gene_chromosome = genes_df["mm10.knownGene.chrom"][column]
-		gene_strand = genes_df["mm10.knownGene.strand"][column]
-
-		file = open("gene_sequences/" + gene_id + "/" + gene_id + ".txt")
-		interest_gene_sequence = file.read()
-
-<<<<<<< HEAD
-		potential_nGREs = regexSearch(interest_gene_sequence, gene_id, gene_chromosome, gene_strand)
-		potential_nGREs.to_csv("test.csv", mode="a", index=False, header=False)
-=======
-		"""
-		potential_nGRE_dataframe = regexSearch(interest_gene_sequence, gene_id, gene_chromosome, gene_strand)
-		print(potential_nGRE_dataframe)
-		nGRE_table.append(potential_nGRE_dataframe, ignore_index=True)
-		"""
-		# print(nGRE_table)
-		# print()
-		potential_nGREs = regexSearch(interest_gene_sequence, gene_id, gene_chromosome, gene_strand)
-		for potential_nGRE in potential_nGREs:
-			nGRE_table = nGRE_table.append(potential_nGRE, ignore_index = True)
-
-	nGRE_table.to_csv("test.csv")
->>>>>>> 2186d65a55acd86563de23c580c4affbb6f97760
+    return unique_list1_genes
 
 
 def main():
-	start = time.time()
+    # write upregulated and downregulated gene names to files
+    dex_upregulated_genes, dex_downregulated_genes = up_down_amounts(dex_vs_vehicle_df)
+    write_to_file("ADX_F_DexvsADX_F_Veh", dex_upregulated_genes, dex_downregulated_genes)
 
-	file = open("gene_sequences/Ccnd2_ENSMUST00000201637.1/Ccnd2_ENSMUST00000201637.1.txt")
-	gene_id = "Ccnd2_ENSMUST00000201637.1"
-	interest_gene = file.read()
+    ovx_dex_upregulated_genes, ovx_dex_downregulated_genes = up_down_amounts(ovx_dex_vs_vehicle_df)
+    write_to_file("OVX_ADX_F_DexvsOVX_ADX_F_Veh", ovx_dex_upregulated_genes, ovx_dex_downregulated_genes)
 
-<<<<<<< HEAD
-=======
-	# localAlignment(interest_gene, gene_id)
-	# regexSearch(interest_gene, gene_id)
+    # Report amount of differential expression before/after estrogen depletion
+    print("Before estrogen depletion, total genes upregulated by dexamethasone: ", len(dex_upregulated_genes))
+    print("Before estrogen depletion, total genes downregulated by dexamethasone: ", len(dex_downregulated_genes))
+    print()
 
->>>>>>> 2186d65a55acd86563de23c580c4affbb6f97760
-	csv_parse("ADX_F_DexvsADX_F_Veh", "upregulated")
+    print("After estrogen depletion, total genes upregulated by dexamethasone: ", len(ovx_dex_upregulated_genes))
+    print("After estrogen depletion, total genes downregulated by dexamethasone: ", len(ovx_dex_downregulated_genes))
+    print()
 
-	end = time.time()
-	runtime = end - start
-	print("Total runtime: {} seconds".format(runtime))
+    # Report numbers of genes upregulated and downregulated in each group
+    mutual_upregulated_genes = find_mutual_genes(dex_upregulated_genes, ovx_dex_upregulated_genes)
+    mutual_downregulated_genes = find_mutual_genes(dex_downregulated_genes, ovx_dex_downregulated_genes)
+
+    print("Genes upregulated by dexamethasone both before and after estrogen depletion: ", len(mutual_upregulated_genes))
+    print("Genes downregulated by dexamethasone both before and after estrogen depletion: ", len(mutual_downregulated_genes))
+    print()
+
+    ovx_upregulated_genes = find_unique_genes(ovx_dex_upregulated_genes, dex_upregulated_genes)
+    ovx_downregulated_genes = find_unique_genes(ovx_dex_downregulated_genes, dex_downregulated_genes)
+    non_ovx_upregulated_genes = find_unique_genes(dex_upregulated_genes, ovx_dex_upregulated_genes)
+    non_ovx_downregulated_genes = find_unique_genes(dex_downregulated_genes, ovx_dex_downregulated_genes)
+
+    print("Genes only upregulated by dexamethasone after estrogen depletion: ", len(ovx_upregulated_genes))
+    print("Genes only downregulated by dexamethasone after estrogen depletion:  ", len(ovx_downregulated_genes))
+    print("Genes only upregulated by dexamethasone before estrogen depletion: ", len(non_ovx_upregulated_genes))
+    print("Genes only downregulated by dexamethasone before estrogen depletion: ", len(non_ovx_downregulated_genes))
+
+    # Create Venn diagrams
+    venn2(subsets = (len(ovx_upregulated_genes), len(non_ovx_upregulated_genes), len(mutual_upregulated_genes)), set_labels = ('OVX_ADX', 'ADX'), set_colors=('purple', 'skyblue'), alpha = 0.5)
+    plt.title("Genes Upregulated by Dexamethasone Before and After Estrogen Depletion")
+    plt.savefig("images/venn_diagrams/upregulated.png", bbox_inches="tight")
+    plt.show()
+
+    venn2(subsets = (len(ovx_downregulated_genes), len(non_ovx_downregulated_genes), len(mutual_downregulated_genes)), set_labels = ('OVX_ADX', 'ADX'), set_colors=('yellow', 'cornflowerblue'), alpha = 0.5)
+    plt.title("Genes Downregulated by Dexamethasone Before and After Estrogen Depletion")
+    plt.savefig("images/venn_diagrams/downregulated.png", bbox_inches="tight")
+    plt.show()
+
 
 if __name__ == "__main__":
     main()
