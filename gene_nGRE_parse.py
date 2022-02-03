@@ -6,24 +6,7 @@ from Bio.Seq import Seq
 
 import pandas as pd
 
-
-
 nGRE_consensus_sequence = "CTCCGGAGA"
-
-def localAlignment(gene_sequence, gene_id):
-	"""Perform local alignment on gene sequences."""
-
-	alignment_start = time.time()
-	# local alignment with match score of 3, mismatch penalty of -1.5, gap opening penalty of -.2, gap extension penalty of -.2
-	myAlignments = pairwise2.align.localms(gene_sequence, nGRE_consensus_sequence, 3, -1, -.2, -.2)
-
-	with open("nGRE_sample_parse_output/parse_" + gene_id + ".txt", "a") as file:
-		for nGRE_alignment in myAlignments:
-			file.write(str(nGRE_alignment))
-
-	alignment_end = time.time()
-	alignment_runtime = alignment_end - alignment_start
-	print("Local alignment finished, total runtime: {} seconds".format(alignment_runtime))
 
 
 def regexSearch(gene_sequence, gene_id, chromosome, strand):
@@ -33,9 +16,6 @@ def regexSearch(gene_sequence, gene_id, chromosome, strand):
 	# find matches
 	print("Searching for nGREs in ", gene_id)
 	possible_matches = regex.findall("([Cc][Tt][Cc][Cc][TAGCtagc]?[TAGCtagc]?[TAGCtagc]?[Gg][Gg][Aa][Gg][Aa]){e<=2}", gene_sequence)
-	# print(possible_matches)
-
-	# print(possible_matches)
 
 	# obtain information about location and number of errors in each nGRE
 	nGRE_sites = pd.DataFrame(columns = ["gene_id", "chromosome", "nGRE_sequence", "start_site", "end_site", "mismatch_mutations", "insertion_mutations", "deletion_mutations"])
@@ -47,25 +27,20 @@ def regexSearch(gene_sequence, gene_id, chromosome, strand):
 
 		# obtain potential nGRE sequence's location in gene sequence
 		pos_information = regex.search(nGRE_sequence, gene_sequence)
-		print(pos_information)
 
 		# retrieve and store start/end coordinates of nGRE
 		start_coordinate_regex = regex.findall(r"\(\d+,", str(pos_information))[0]
 		start_coordinate = int (regex.findall("\d+", str(start_coordinate_regex))[0])
-
-		# start_coordinate = start_coordinate_element[1:len(start_coordinate_element)]
-
 		end_coordinate_regex = regex.findall(r" \d+\)", str(pos_information))[0]
 		end_coordinate = int (regex.findall("\d+", str(end_coordinate_regex))[0])
 
 		# compare to perfect nGRE for error counts
-		comparison = (regex.search(r"([Cc][Tt][Cc][Cc][TAGCtagc]?[TAGCtagc]?[TAGCtagc]?[Gg][Gg][Aa][Gg][Aa]){e<=2}", nGRE_sequence))
-		# print(comparison.fuzzy_counts)
+		comparison = (regex.search(r"((?e)[Cc][Tt][Cc][Cc][TAGCtagc]?[TAGCtagc]?[TAGCtagc]?[Gg][Gg][Aa][Gg][Aa]){e<=2}", nGRE_sequence))
 		mutation_counts = comparison.fuzzy_counts
 		mismatch_count = mutation_counts[0]
 		insertion_count = mutation_counts[1]
 		deletion_count = mutation_counts[2]
-		# print(mismatch_count, insertion_count, deletion_count)
+		total_mutations = mismatch_count + insertion_count + deletion_count
 
 		# assemble dictionary of nGRE information
 		nGRE_information_dict["gene_id"] = gene_id
@@ -73,55 +48,40 @@ def regexSearch(gene_sequence, gene_id, chromosome, strand):
 		nGRE_information_dict["nGRE_sequence"] = nGRE_sequence
 		nGRE_information_dict["start_site"] = start_coordinate
 		nGRE_information_dict["end_site"] = end_coordinate
+		nGRE_information_dict["mutations"] = total_mutations
 		nGRE_information_dict["mismatch_mutations"] = mismatch_count
 		nGRE_information_dict["insertion_mutations"] = insertion_count
 		nGRE_information_dict["deletion_mutations"] = deletion_count
 
 		# nGRE_sites = nGRE_sites.append(nGRE_information_dict, ignore_index = True)
-		# print(nGRE_information_dict)
-		# print(nGRE_sites)
-		# print(nGRE_information_dict)
-		print()
 		nGRE_list.append(nGRE_information_dict)
 		# nGRE_information_dict.clear()
 
 	regex_end = time.time()
 	regex_runtime = regex_end - regex_start
 	print("Regex search completed, total runtime: {} seconds".format(regex_runtime))
-	# print(nGRE_sites)
-	print()
 
-	return nGRE_list
+	nGRE_table = pd.DataFrame(columns = ["gene_id", "chromosome", "nGRE_sequence", "start_site", "end_site", "mutations", "mismatch_mutations", "insertion_mutations", "deletion_mutations"])
+	for nGRE in nGRE_list:
+		nGRE_table = nGRE_table.append(nGRE, ignore_index = True)
+
+	return nGRE_table
 
 
 def csv_parse(treatment, regulation):
 	genes_df = pd.read_csv("annotated_gene_datasets/" + treatment + "/" + regulation + "_genes/" + regulation + "_output_with_gene_names_known_sequences.tsv", sep = "\t")
-	print("Test")
 
-	nGRE_table = pd.DataFrame(columns = ["gene_id", "chromosome", "nGRE_sequence", "start_site", "end_site", "mismatch_mutations", "insertion_mutations", "deletion_mutations"])
 
-	for column in range(0, 10):
-		# print(column)
+	for column in range(len(genes_df)):
 		gene_id = genes_df["mm10.kgXref.geneSymbol"][column] + "_" + genes_df["#mm10.knownGene.name"][column]
-		# print(gene_id)
 		gene_chromosome = genes_df["mm10.knownGene.chrom"][column]
 		gene_strand = genes_df["mm10.knownGene.strand"][column]
 
 		file = open("gene_sequences/" + gene_id + "/" + gene_id + ".txt")
 		interest_gene_sequence = file.read()
 
-		"""
-		potential_nGRE_dataframe = regexSearch(interest_gene_sequence, gene_id, gene_chromosome, gene_strand)
-		print(potential_nGRE_dataframe)
-		nGRE_table.append(potential_nGRE_dataframe, ignore_index=True)
-		"""
-		# print(nGRE_table)
-		# print()
 		potential_nGREs = regexSearch(interest_gene_sequence, gene_id, gene_chromosome, gene_strand)
-		for potential_nGRE in potential_nGREs:
-			nGRE_table = nGRE_table.append(potential_nGRE, ignore_index = True)
-
-	nGRE_table.to_csv("test.csv")
+		potential_nGREs.to_csv("test.csv", mode="a", index=False, header=False)
 
 
 def main():
@@ -130,9 +90,6 @@ def main():
 	file = open("gene_sequences/Ccnd2_ENSMUST00000201637.1/Ccnd2_ENSMUST00000201637.1.txt")
 	gene_id = "Ccnd2_ENSMUST00000201637.1"
 	interest_gene = file.read()
-
-	# localAlignment(interest_gene, gene_id)
-	# regexSearch(interest_gene, gene_id)
 
 	csv_parse("ADX_F_DexvsADX_F_Veh", "upregulated")
 
