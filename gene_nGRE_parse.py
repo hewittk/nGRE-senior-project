@@ -87,10 +87,6 @@ def csv_parse(treatment, regulation):
 def main():
 	start = time.time()
 
-	file = open("gene_sequences/Ccnd2_ENSMUST00000201637.1/Ccnd2_ENSMUST00000201637.1.txt")
-	gene_id = "Ccnd2_ENSMUST00000201637.1"
-	interest_gene = file.read()
-
 	csv_parse("ADX_F_DexvsADX_F_Veh", "upregulated")
 
 	end = time.time()
