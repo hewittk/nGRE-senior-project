@@ -84,17 +84,18 @@ def csv_parse(treatment, regulation):
 
 		# record potential nGREs found in given gene sequence
 		potential_nGREs = regexSearch(interest_gene_sequence, gene_id, gene_chromosome, gene_strand)
-		potential_nGREs.to_csv("test.csv", mode="a", index=False, header=False)
+		potential_nGREs.to_csv("nGRE_parse_output/ADX_F_DexvsADX_F_Veh/" + regulation + "_gene_output.csv", mode="a", index=False, header=False)
 
 
 def main():
 
 	start = time.time()
-	csv_parse("ADX_F_DexvsADX_F_Veh", "upregulated")
+	csv_parse("ADX_F_DexvsADX_F_Veh", "downregulated")
 	end = time.time()
 
 	runtime = end - start
 	print("Total runtime: {} seconds".format(runtime))
+
 
 if __name__ == "__main__":
     main()
