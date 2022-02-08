@@ -4,3 +4,4 @@ nGRE_parse_output/ADX_F_DexvsADX_F_Veh/upregulated_gene_output.csv filter=lfs di
 nGRE_parse_output/ADX_F_DexvsADX_F_Veh/downregulated_gene_output.csv filter=lfs diff=lfs merge=lfs -text
 nGRE_parse_output/OVX_ADX_F_DexvsOVX_ADX_F_Veh/upregulated_gene_output.csv filter=lfs diff=lfs merge=lfs -text
 nGRE_parse_output/OVX_ADX_F_DexvsOVX_ADX_F_Veh/downregulated_genes filter=lfs diff=lfs merge=lfs -text
+nGRE_parse_output/OVX_ADX_F_DexvsOVX_ADX_F_Veh/downregulated_gene_output.csv filter=lfs diff=lfs merge=lfs -text
