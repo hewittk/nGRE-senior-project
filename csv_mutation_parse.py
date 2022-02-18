@@ -1,4 +1,5 @@
 import csv
+import time
 import pandas as pd
 
 def fewer_mutations_parse(treatment, regulation, maximum_mutations):
@@ -21,7 +22,7 @@ def fewer_mutations_parse(treatment, regulation, maximum_mutations):
 def main():
 
 	start = time.time()
-	csv_parse("OVX_ADX_F_DexvsOVX_ADX_F_Veh", "upregulated")
+	fewer_mutations_parse("ADX_F_DexvsADX_F_Veh", "upregulated", 1)
 	end = time.time()
 
 	runtime = end - start
