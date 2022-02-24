@@ -6,8 +6,9 @@ def main():
     st.write("Parse gene sequences for custom nuclear hormone response element or other subsequence")
 
     target_element = st.text_area("Insert target element to parse for")
-    st.write(target_element)
-    element_to_regex(target_element)
+    if(target_element):
+        st.write(target_element)
+        element_to_regex(target_element)
 
 
     gene_sequence = st.text_area("Insert DNA sequence to search for target element in")
@@ -44,3 +45,28 @@ def element_to_regex(element):
     if (element[len(element)-1]) != ")":
         element_components.append(subcomponent)
     print("Subcomponent list: ", element_components)
+
+    # sort element components into regex components
+    previous_component = ""
+    regex_string = ""
+    for component in element_components:
+        # process previous group if component is number of repeats
+        if component[0].isnumeric():
+            print(previous_component)
+            if previous_component.isalpha(): # check if string is all letters
+                if "-" in component:
+                    print("Component split: ", component.split("-"))
+            else:
+                st.write("Error: Repitition number or number range in parantheses is not preceded by nucleotides")
+                st.write("Test")
+
+        # cast component into regex
+        previous_component = component
+
+    # append upper/lower case of nucleotides
+    for nucleotide_group in element_components:
+        if nucleotide_group != nucleotide_group.upper():
+            nucleotide_group += nucleotide_group.upper()
+        elif nucleotide_group != nucleotide_group.lower():
+            nucleotide_group += nucleotide_group.lower()
+        print("Nucleotide group after fixing letter case: ", nucleotide_group)
