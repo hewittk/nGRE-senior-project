@@ -15,7 +15,7 @@ def regexSearch(gene_sequence, gene_id, chromosome, strand):
 	regex_start = time.time()
 	# find matches
 	print("Searching for nGREs in ", gene_id)
-	possible_matches = regex.findall("([Cc][Tt][Cc][Cc][TAGCtagc]?[TAGCtagc]?[TAGCtagc]?[Gg][Gg][Aa][Gg][Aa]){e<=2}", gene_sequence)
+	possible_matches = regex.findall("((?e)[Cc][Tt][Cc][Cc][TAGCtagc]?[TAGCtagc]?[TAGCtagc]?[Gg][Gg][Aa][Gg][Aa]){e<=2}", gene_sequence)
 
 	# obtain information about location and number of errors in each nGRE
 	nGRE_sites = pd.DataFrame(columns = ["gene_id", "chromosome", "nGRE_sequence", "start_site", "end_site", "mismatch_mutations", "insertion_mutations", "deletion_mutations"])
@@ -85,7 +85,6 @@ def csv_parse(treatment, regulation):
 		# record potential nGREs found in given gene sequence
 		potential_nGREs = regexSearch(interest_gene_sequence, gene_id, gene_chromosome, gene_strand)
 		potential_nGREs.to_csv("nGRE_parse_output/" + treatment + "/" + regulation + "_gene_output.csv", mode="a", index=False, header=False)
-
 
 def main():
 
