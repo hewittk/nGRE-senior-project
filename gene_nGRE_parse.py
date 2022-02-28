@@ -89,7 +89,7 @@ def csv_parse(treatment, regulation):
 def main():
 
 	start = time.time()
-	csv_parse("ADX_F_DexvsADX_F_Veh", "upregulated")
+	csv_parse("ADX_F_DexvsADX_F_Veh", "downregulated")
 	end = time.time()
 
 	runtime = end - start

@@ -49,6 +49,7 @@ def element_to_regex(element):
     # sort element components into regex components
     previous_component = ""
     regex_string = ""
+    previous_regex_string = ""
     for component in element_components:
         # process previous group if component is number of repeats
         if component[0].isnumeric():
@@ -59,6 +60,11 @@ def element_to_regex(element):
             else:
                 st.write("Error: Repitition number or number range in parantheses is not preceded by nucleotides")
                 st.write("Test")
+        else:
+            for nucleotide in component:
+                regex_string += "[" + nucleotide.upper() + nucleotide.lower() + "]"
+
+        print("Regex string: " + regex_string)
 
         # cast component into regex
         previous_component = component
