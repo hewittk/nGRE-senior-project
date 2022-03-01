@@ -18,6 +18,25 @@ def main():
         'What is the maximum number of mutations in the nGRE consensus sequence that you want to tolerate?',
         ('0', '1', '2', '3'))
 
+def nucleotide_bracket(sequence_component):
+    print("sequence_component: ", sequence_component)
+    expanded_sequence_component = ""
+    expansion = ""
+
+    for character in sequence_component:
+        if character.isalpha():
+            if character == character.upper():
+                expansion = "[" + character + character.lower() + "]"
+            if character == character.lower():
+                expansion = "[" + character.upper() + character + "]"
+            expanded_sequence_component += expansion
+        else:
+            expanded_sequence_component += character
+
+    print("expanded_sequence_component: ", expanded_sequence_component)
+
+    return expanded_sequence_component
+
 def element_to_regex(element):
     """Transform user-inputted subsequence into its regex form."""
 
@@ -46,6 +65,32 @@ def element_to_regex(element):
         element_components.append(subcomponent)
     print("Subcomponent list: ", element_components)
 
+    previous_component = element_components[0]
+    regex_string = ""
+    for i in range(1, len(element_components)):
+
+        if element_components[i][0].isnumeric():
+            print("Numeric component found: " + element_components[i])
+            if previous_component.isalpha(): # check if string is all letters
+                if "-" in element_components[i]:
+                    component_split = element_components[i].split("-")
+                    print("Component split: ", component_split)
+                    previous_component += "{" + component_split[0] + "," + component_split[1] + "}"
+                else:
+                    st.write("Error: Repitition number or number range in parantheses is not preceded by nucleotides")
+
+        if (previous_component.islower() or previous_component.isupper()): # if previous string contains nucleotides
+            nucleotide_bracket(previous_component)
+            regex_string += previous_component
+
+        previous_component = element_components[i] # increment
+
+    print(regex_string)
+
+    print("--------------")
+    print()
+
+    """
     # sort element components into regex components
     previous_component = ""
     regex_string = ""
@@ -68,6 +113,7 @@ def element_to_regex(element):
 
         # cast component into regex
         previous_component = component
+    """
 
     # append upper/lower case of nucleotides
     for nucleotide_group in element_components:
