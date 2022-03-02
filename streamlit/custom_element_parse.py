@@ -75,15 +75,19 @@ def element_to_regex(element):
                 if "-" in element_components[i]:
                     component_split = element_components[i].split("-")
                     print("Component split: ", component_split)
+                    previous_component = "(" + nucleotide_bracket(previous_component) + ")"                    
                     previous_component += "{" + component_split[0] + "," + component_split[1] + "}"
                 else:
                     st.write("Error: Repitition number or number range in parantheses is not preceded by nucleotides")
+            else:
+                previous_component = nucleotide_bracket(previous_component)
 
-        if (previous_component.islower() or previous_component.isupper()): # if previous string contains nucleotides
-            nucleotide_bracket(previous_component)
+        if (bool(regex.search('[a-zA-Z]', previous_component))): # if previous string contains nucleotides
             regex_string += previous_component
 
         previous_component = element_components[i] # increment
+
+    regex_string += nucleotide_bracket(element_components[len(element_components)-1])
 
     print(regex_string)
 
