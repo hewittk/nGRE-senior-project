@@ -75,7 +75,7 @@ def element_to_regex(element):
                 if "-" in element_components[i]:
                     component_split = element_components[i].split("-")
                     print("Component split: ", component_split)
-                    previous_component = "(" + nucleotide_bracket(previous_component) + ")"                    
+                    previous_component = "(" + nucleotide_bracket(previous_component) + ")"
                     previous_component += "{" + component_split[0] + "," + component_split[1] + "}"
                 else:
                     st.write("Error: Repitition number or number range in parantheses is not preceded by nucleotides")
