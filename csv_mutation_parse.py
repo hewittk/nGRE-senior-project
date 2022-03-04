@@ -1,16 +1,17 @@
 """Make subset csv of all potential nGREs file that only contains rows of nGREs that have up to a maximum number of mutations."""
- 
+
 import csv
 import time
 import pandas as pd
 
-def fewer_mutations_parse(treatment, regulation, maximum_mutations):
+def fewer_mutations_parse(treatment, regulation):
     """Parse potential nGRE csv file and return all that have up to maximum number of mutations."""
 
     df = pd.read_csv("nGRE_parse_output/" + treatment + "/" + regulation + "_gene_output.csv")
 
-    two_mutations = 0
-    minimal_mutations = 0
+    # trackers for how many genes in subset have zero or one mutations
+    zero_mutation_subsequences = 0
+    one_mutation_subsequences = 0
 
     fewer_mutations_table = pd.DataFrame(columns = ["gene_id", "chromosome", "nGRE_sequence", "start_site", "end_site", "mutations", "mismatch_mutations", "insertion_mutations", "deletion_mutations"])
 
