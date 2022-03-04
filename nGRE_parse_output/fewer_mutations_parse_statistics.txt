@@ -1,0 +1,16 @@
+In the ADX_F_DexvsADX_F_Veh upregulated dataset (length 5084495 genes):
+Number of potential nGREs with zero mutations found:  16067
+Number of potential nGREs with one mutation found:  464324
+ 
+In the ADX_F_DexvsADX_F_Veh downregulated dataset (length 4178871 genes):
+Number of potential nGREs with zero mutations found:  14724
+Number of potential nGREs with one mutation found:  394197
+ 
+In the OVX_ADX_F_DexvsOVX_ADX_F_Veh upregulated dataset (length 6665816 genes):
+Number of potential nGREs with zero mutations found:  21798
+Number of potential nGREs with one mutation found:  614275
+ 
+In the OVX_ADX_F_DexvsOVX_ADX_F_Veh downregulated dataset (length 5619018 genes):
+Number of potential nGREs with zero mutations found:  19359
+Number of potential nGREs with one mutation found:  526550
+ 
