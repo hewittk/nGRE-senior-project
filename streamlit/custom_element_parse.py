@@ -103,6 +103,9 @@ def element_to_regex(element):
                     print("Component split: ", component_split)
                     previous_component = "(" + nucleotide_bracket(previous_component) + ")"
                     previous_component += "{" + component_split[0] + "," + component_split[1] + "}"
+                elif (element_components[i].isdigit()):
+                    previous_component = "(" + nucleotide_bracket(previous_component) + ")"
+                    previous_component += "{" + element_components[i] + "}"
                 else:
                     st.write("Error: Repitition number or number range in parantheses is not preceded by nucleotides")
             else:
