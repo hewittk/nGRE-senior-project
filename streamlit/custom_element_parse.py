@@ -21,15 +21,21 @@ def main():
     sequence_search(gene_sequence, regex_element, maximum_mutations)
 
 def sequence_search(gene_sequence, regex_element, maximum_mutations):
-    if(int(maximum_mutations) > 0):
+    """Search given sequence for given regex subsequence pattern and return any matches."""
+
+    # put regex element into python regex package processing format
+    if(int(maximum_mutations) > 0): # process any potential mutaitons
         regex_element = "((?e)" + regex_element + "){e<=" + str(maximum_mutations) + "}"
     else:
         regex_element = "(" + regex_element + ")"
+
     element_matches = regex.findall(str(regex_element), gene_sequence)
     print(element_matches)
     st.write(element_matches)
 
 def iupac_handling(iupac_code, position, str):
+    """Convert IUPAC codes to nucleotide possibilities that they symbolize."""
+
     if(iupac_code == "Y"):
         return str[:(position)] + "CcTt" + str[(position+2):]
     if(iupac_code == "S"):
@@ -48,14 +54,17 @@ def iupac_handling(iupac_code, position, str):
         return str[:(position)] + "AaGgTt" + str[(position+2):]
     if(iupac_code == "H"):
         return str[:(position)] + "AaCcTt" + str[(position+2):]
-    elif(iupac_code == "V"):
+    if(iupac_code == "V"):
         return str[:(position)] + "AaGgCc" + str[(position+2):]
-    elif(iupac_code == "N"):
+    if(iupac_code == "N"):
         return str[:(position)] + "AaCcTtGg" + str[(position+2):]
-    return "Test"
+
+    return "None"
 
 
 def nucleotide_bracket(sequence_component):
+    """Put each nucleotide letter into bracket with letter of other case."""
+
     print("sequence_component: ", sequence_component)
     expanded_sequence_component = ""
     expansion = ""
