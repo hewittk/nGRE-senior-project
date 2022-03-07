@@ -66,11 +66,10 @@ def nucleotide_bracket(sequence_component):
 def element_to_regex(element):
     """Transform user-inputted subsequence into its regex form."""
 
-    # separate subsequence into list elements by parantheses
+    # separate subsequence of interest into list elements by parantheses
     subcomponent = ""
     element_components = []
 
-    # append element in groups by parantheses
     for character in element:
         print("character: " + character)
         if character == "(":
@@ -86,11 +85,11 @@ def element_to_regex(element):
             subcomponent += character
         print(subcomponent)
 
-    # append last subcomponent if not in parantheses
-    if (element[len(element)-1]) != ")":
+    if (element[len(element)-1]) != ")": # append last subcomponent if not in parantheses
         element_components.append(subcomponent)
     print("Subcomponent list: ", element_components)
 
+    # cast subsequence into its regular expression
     previous_component = element_components[0]
     regex_string = ""
     for i in range(1, len(element_components)):
@@ -125,9 +124,7 @@ def element_to_regex(element):
 
     # handle any IUPAC codes in sequence
     iupac_codes = ["N", "S", "W", "Y", "R", "M", "K", "B", "D", "V", "H"]
-    # iupac_codes = "SWYRMNKBDVH"
-
-    i = 0
+    i = 0 # incrementer
     prev_length = len(regex_string)
     while (i < len(regex_string)):
         if(regex_string[i] in iupac_codes):
@@ -136,15 +133,6 @@ def element_to_regex(element):
         else:
             i += 1
 
-    """
-    for i in range(len(regex_string)):
-        # print("Letter: " + regex_string[i] + " type " + str(type(regex_string[i])))
-        if(regex_string[i] in iupac_codes):
-            regex_string = iupac_handling(regex_string[i], i, regex_string)
-            print("Regex string: " + regex_string)
-    """
-
     print(regex_string)
-
     print("--------------")
     print()
