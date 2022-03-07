@@ -97,7 +97,7 @@ def element_to_regex(element):
 
         if element_components[i][0].isnumeric():
             print("Numeric component found: " + element_components[i])
-            if previous_component.isalpha(): # check if string is all letters
+            if previous_component.isalpha(): # check if previous string is all letters
                 if "-" in element_components[i]:
                     component_split = element_components[i].split("-")
                     print("Component split: ", component_split)
@@ -108,8 +108,8 @@ def element_to_regex(element):
                     previous_component += "{" + element_components[i] + "}"
                 else:
                     st.write("Error: Repitition number or number range in parantheses is not preceded by nucleotides")
-            else:
-                previous_component = nucleotide_bracket(previous_component)
+        else:
+            previous_component = nucleotide_bracket(previous_component)
 
         if (bool(regex.search('[a-zA-Z]', previous_component))): # if previous string contains nucleotides
             regex_string += previous_component
