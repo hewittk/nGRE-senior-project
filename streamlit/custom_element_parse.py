@@ -18,10 +18,13 @@ def main():
         'What is the maximum number of mutations in the nGRE consensus sequence that you want to tolerate?',
         ('0', '1', '2', '3'))
 
-    sequence_search(gene_sequence, regex_element)
+    sequence_search(gene_sequence, regex_element, maximum_mutations)
 
-def sequence_search(gene_sequence, regex_element):
-    regex_element = "(" + regex_element + ")"
+def sequence_search(gene_sequence, regex_element, maximum_mutations):
+    if(int(maximum_mutations) > 0):
+        regex_element = "((?e)" + regex_element + "){e<=" + str(maximum_mutations) + "}"
+    else:
+        regex_element = "(" + regex_element + ")"
     element_matches = regex.findall(str(regex_element), gene_sequence)
     print(element_matches)
     st.write(element_matches)
