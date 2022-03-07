@@ -5,11 +5,11 @@ import pandas as pd
 def main():
     st.write("Parse gene sequences for custom nuclear hormone response element or other subsequence")
 
+    regex_element = ""
     target_element = st.text_area("Insert target element to parse for")
     if(target_element):
         st.write(target_element)
-        element_to_regex(target_element)
-
+        regex_element = element_to_regex(target_element)
 
     gene_sequence = st.text_area("Insert DNA sequence to search for target element in")
     st.write(gene_sequence)
@@ -17,6 +17,14 @@ def main():
     maximum_mutations = st.selectbox(
         'What is the maximum number of mutations in the nGRE consensus sequence that you want to tolerate?',
         ('0', '1', '2', '3'))
+
+    sequence_search(gene_sequence, regex_element)
+
+def sequence_search(gene_sequence, regex_element):
+    regex_element = "(" + regex_element + ")"
+    element_matches = regex.findall(str(regex_element), gene_sequence)
+    print(element_matches)
+    st.write(element_matches)
 
 def iupac_handling(iupac_code, position, str):
     if(iupac_code == "Y"):
@@ -136,3 +144,5 @@ def element_to_regex(element):
     print(regex_string)
     print("--------------")
     print()
+
+    return regex_string
