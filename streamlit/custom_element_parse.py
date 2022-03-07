@@ -116,7 +116,8 @@ def element_to_regex(element):
 
         previous_component = element_components[i] # increment
 
-    regex_string += nucleotide_bracket(element_components[len(element_components)-1])
+    if(element_components[len(element_components)-1].isalpha()):
+        regex_string += nucleotide_bracket(element_components[len(element_components)-1])
 
     print()
     print(regex_string)
