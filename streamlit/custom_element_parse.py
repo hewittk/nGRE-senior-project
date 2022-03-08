@@ -23,8 +23,8 @@ def main():
 def sequence_search(gene_sequence, regex_element, maximum_mutations):
     """Search given sequence for given regex subsequence pattern and return any matches."""
 
-    # put regex element into python regex package processing format
-    if(int(maximum_mutations) > 0): # process any potential mutaitons
+    # put regex element into python regex package's processing format
+    if(int(maximum_mutations) > 0): # process any potential mutations
         regex_element = "((?e)" + regex_element + "){e<=" + str(maximum_mutations) + "}"
     else:
         regex_element = "(" + regex_element + ")"
@@ -59,7 +59,7 @@ def iupac_handling(iupac_code, position, str):
     if(iupac_code == "N"):
         return str[:(position)] + "AaCcTtGg" + str[(position+2):]
 
-    return "None"
+    return "None" # if letter submitted not found
 
 
 def nucleotide_bracket(sequence_component):

@@ -1,0 +1,4 @@
+biopython==1.79
+certifi==2021.10.8
+numpy==1.21.4
+regex==2021.11.10
