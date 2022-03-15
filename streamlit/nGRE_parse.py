@@ -33,7 +33,6 @@ def main():
 
     nGRE_info_dataframe(possible_nGREs, gene_sequence)
 
-
 def nGRE_info_dataframe(possible_nGREs, gene_sequence):
     nGRE_table = pd.DataFrame(columns = ["sequence", "start", "end", "mutations"])
 
