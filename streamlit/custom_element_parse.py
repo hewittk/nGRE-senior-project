@@ -161,6 +161,7 @@ def element_to_regex(element):
 
 def count_length(regex_sequence):
     """Count all mandatory nucleotides to find and return minimum length of sequence."""
+    
     length = 0
     for i in range(len(regex_sequence)):
         if(regex_sequence[i] == "]"):
