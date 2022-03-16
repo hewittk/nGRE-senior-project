@@ -42,27 +42,34 @@ def main():
 def matches_df(matches, target_element, regex_element, gene_sequence, maximum_mutations, mismatch_penalty, insertion_penalty, deletion_penalty):
     """Score matches to custom element based on amount of mutations."""
 
-    # obtain minimum length of element to use as base score
+    # obtain minimum length of target element to use as base score
     length = count_length(regex_element)
     print("Length: ", length)
+
+    # remove repeats from matches list
+    nonrepeat_matches = []
+    for match in matches:
+        if match not in nonrepeat_matches:
+            nonrepeat_matches.append(match)
+    print("nonrepeat_matches: " + str(nonrepeat_matches))
+    st.write(nonrepeat_matches)
 
     # score and add each element to dataframe
     element_table = pd.DataFrame(columns = ["sequence", "start", "end", "score", "mutations", "mismatch", "insertion", "deletion"])
     element_information = {}
     match_element = ""
     for element in matches:
-        print(type(element))
 
         if type(element) == tuple:
             match_element = str(element[0])
         else:
             match_element = element
 
-        print("Element after casting: ", match_element)
-
-        print("Element after regex checks: ", match_element)
-
         element_information["sequence"] = match_element
+
+        p = regex.compile(element_to_regex(match_element))
+        for m in p.finditer(gene_sequence):
+            print(m.start(), m.group())
 
         pos_information = regex.search(str(match_element), gene_sequence)
         print("pos_information: " + str(pos_information))
@@ -120,6 +127,7 @@ def sequence_search(gene_sequence, regex_element, maximum_mutations):
 
     print("Element matches: " + str(element_matches))
     st.write(element_matches)
+    st.write(type(element_matches))
 
     return element_matches
 
