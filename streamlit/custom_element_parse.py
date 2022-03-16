@@ -56,39 +56,19 @@ def matches_df(matches, target_element, regex_element, gene_sequence, maximum_mu
 
     # score and add each element to dataframe
     element_table = pd.DataFrame(columns = ["sequence", "start", "end", "score", "mutations", "mismatch", "insertion", "deletion"])
-    element_information = {}
     match_element = ""
-    for element in matches:
+
+    element_information = {}
+    for element in nonrepeat_matches:
 
         if type(element) == tuple:
             match_element = str(element[0])
         else:
             match_element = element
 
-        element_information["sequence"] = match_element
-
-        p = regex.compile(element_to_regex(match_element))
-        for m in p.finditer(gene_sequence):
-            print(m.start(), m.group())
-
-        pos_information = regex.search(str(match_element), gene_sequence)
-        print("pos_information: " + str(pos_information))
-
-        # find and extract start coordinate from pos_information using regex
-        start_coordinate_regex = regex.findall(r"\(\d+,", str(pos_information))
-        print("Start coordinate regex: " + str(start_coordinate_regex))
-        start_coordinate = int(regex.findall("\d+", str(start_coordinate_regex))[0])
-        element_information["start"] = start_coordinate
-
-        # find and extract end coordinate from pos_information using regex
-        end_coordinate_regex = regex.findall(r" \d+\)", str(pos_information))[0]
-        end_coordinate = int(regex.findall("\d+", str(end_coordinate_regex))[0])
-        element_information["end"] = end_coordinate
-
+        # find number of mutations in sequence
         comparison = (regex.search(r"((?e)" + regex_element + "){e<=" + str(maximum_mutations) + "}", str(match_element)))
         print(comparison)
-
-        # find number of mutations in sequence
         mutation_counts = comparison.fuzzy_counts
         mismatch_count = mutation_counts[0]
         insertion_count = mutation_counts[1]
@@ -97,13 +77,25 @@ def matches_df(matches, target_element, regex_element, gene_sequence, maximum_mu
 
         # calculate score
         score = 9 - insertion_penalty*(insertion_count) - deletion_penalty*(deletion_count) - mismatch_penalty*(mismatch_count)
-        element_information["score"] = score
-        element_information["mutations"] = total_mutations
-        element_information["mismatch"] = mismatch_count
-        element_information["insertion"] = insertion_count
-        element_information["deletion"] = deletion_count
 
-        element_table = element_table.append(element_information, ignore_index = True)
+        # find all start/end locations of element
+        element_locations = []
+        p = regex.compile(element_to_regex(match_element))
+        for match_location in p.finditer(gene_sequence):
+            element_locations.append([match_location.start(), match_location.end()])
+        st.write(element_locations)
+
+        for location in element_locations:
+            element_information.clear()
+            element_information["sequence"] = match_element
+            element_information["start"] = location[0]
+            element_information["end"] = location[1]
+            element_information["score"] = score
+            element_information["mutations"] = total_mutations
+            element_information["mismatch"] = mismatch_count
+            element_information["insertion"] = insertion_count
+            element_information["deletion"] = deletion_count
+            element_table = element_table.append(element_information, ignore_index = True)
 
     st.dataframe(element_table)
 
