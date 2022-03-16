@@ -3,35 +3,125 @@ import streamlit as st
 import pandas as pd
 
 def main():
+
     st.write("Parse gene sequences for custom nuclear hormone response element or other subsequence")
 
     regex_element = ""
     target_element = st.text_area("Insert target element to parse for")
+
+    gene_sequence = st.text_area("Insert DNA sequence to search for target element in")
+
+    maximum_mutations = int(st.selectbox(
+        'What is the maximum number of mutations in the nGRE consensus sequence that you want to tolerate?',
+        ('0', '1', '2', '3')))
+
+    mismatch_penalty = int(st.selectbox(
+         'What do you want the mismatch penalty (number of points subtracted from a subsequence\'s score for every mismatch mutation) to be?',
+         ('1', '2', '3', '0')))
+
+    insertion_penalty = int(st.selectbox(
+         'What do you want the insertion penalty (number of points subtracted from a subsequence\'s score for every insertion mutation) to be?',
+         ('1', '2', '3', '0')))
+
+    deletion_penalty = int(st.selectbox(
+         'What do you want the deletion penalty (number of points subtracted from a subsequence\'s score for every deletion mutation) to be?',
+         ('1', '2', '3', '0')))
+
     if(target_element):
         st.write(target_element)
         regex_element = element_to_regex(target_element)
 
-    gene_sequence = st.text_area("Insert DNA sequence to search for target element in")
+    print("Regex element in main: " + regex_element)
+
     st.write(gene_sequence)
 
-    maximum_mutations = st.selectbox(
-        'What is the maximum number of mutations in the nGRE consensus sequence that you want to tolerate?',
-        ('0', '1', '2', '3'))
+    matches = sequence_search(gene_sequence, regex_element, maximum_mutations)
 
-    sequence_search(gene_sequence, regex_element, maximum_mutations)
+    matches_df(matches, target_element, regex_element, gene_sequence, maximum_mutations, mismatch_penalty, insertion_penalty, deletion_penalty)
+
+def matches_df(matches, target_element, regex_element, gene_sequence, maximum_mutations, mismatch_penalty, insertion_penalty, deletion_penalty):
+    """Score matches to custom element based on amount of mutations."""
+
+    # obtain minimum length of element to use as base score
+    length = count_length(regex_element)
+    print("Length: ", length)
+
+    # score and add each element to dataframe
+    element_table = pd.DataFrame(columns = ["sequence", "start", "end", "score", "mutations", "mismatch", "insertion", "deletion"])
+    element_information = {}
+    match_element = ""
+    for element in matches:
+        print(type(element))
+
+        if type(element) == tuple:
+            match_element = str(element[0])
+        else:
+            match_element = element
+
+        print("Element after casting: ", match_element)
+
+        print("Element after regex checks: ", match_element)
+
+        element_information["sequence"] = match_element
+
+        pos_information = regex.search(str(match_element), gene_sequence)
+        print("pos_information: " + str(pos_information))
+
+        # find and extract start coordinate from pos_information using regex
+        start_coordinate_regex = regex.findall(r"\(\d+,", str(pos_information))
+        print("Start coordinate regex: " + str(start_coordinate_regex))
+        start_coordinate = int(regex.findall("\d+", str(start_coordinate_regex))[0])
+        element_information["start"] = start_coordinate
+
+        # find and extract end coordinate from pos_information using regex
+        end_coordinate_regex = regex.findall(r" \d+\)", str(pos_information))[0]
+        end_coordinate = int(regex.findall("\d+", str(end_coordinate_regex))[0])
+        element_information["end"] = end_coordinate
+
+        comparison = (regex.search(r"((?e)" + regex_element + "){e<=" + str(maximum_mutations) + "}", str(match_element)))
+        print(comparison)
+
+        # find number of mutations in sequence
+        mutation_counts = comparison.fuzzy_counts
+        mismatch_count = mutation_counts[0]
+        insertion_count = mutation_counts[1]
+        deletion_count = mutation_counts[2]
+        total_mutations = mismatch_count + insertion_count + deletion_count
+
+        # calculate score
+        score = 9 - insertion_penalty*(insertion_count) - deletion_penalty*(deletion_count) - mismatch_penalty*(mismatch_count)
+        element_information["score"] = score
+        element_information["mutations"] = total_mutations
+        element_information["mismatch"] = mismatch_count
+        element_information["insertion"] = insertion_count
+        element_information["deletion"] = deletion_count
+
+        element_table = element_table.append(element_information, ignore_index = True)
+
+    st.dataframe(element_table)
+
 
 def sequence_search(gene_sequence, regex_element, maximum_mutations):
     """Search given sequence for given regex subsequence pattern and return any matches."""
+
+    print("Regex element in sequence search: " + regex_element)
 
     # put regex element into python regex package's processing format
     if(int(maximum_mutations) > 0): # process any potential mutations
         regex_element = "((?e)" + regex_element + "){e<=" + str(maximum_mutations) + "}"
     else:
         regex_element = "(" + regex_element + ")"
+    print("Regex element after processing " + regex_element)
+
+    if(type(regex_element) == list):
+        regex_element = str(regex_element[0])
 
     element_matches = regex.findall(str(regex_element), gene_sequence)
-    print(element_matches)
+
+    print("Element matches: " + str(element_matches))
     st.write(element_matches)
+
+    return element_matches
 
 def iupac_handling(iupac_code, position, str):
     """Convert IUPAC codes to nucleotide possibilities that they symbolize."""
@@ -161,10 +251,10 @@ def element_to_regex(element):
 
 def count_length(regex_sequence):
     """Count all mandatory nucleotides to find and return minimum length of sequence."""
-    
+
     length = 0
     for i in range(len(regex_sequence)):
         if(regex_sequence[i] == "]"):
-            if((not(i+1 > len(regex_sequence))) and (regex_sequence[i+1] != "?")):
+            if((not(i+1 >= len(regex_sequence))) and (regex_sequence[i+1] != "?")):
                 length += 1
     return length
