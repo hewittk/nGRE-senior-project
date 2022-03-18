@@ -15,57 +15,58 @@ def regexSearch(gene_sequence, gene_id, chromosome, strand):
 	regex_start = time.time()
 	# find matches
 	print("Searching for nGREs in ", gene_id)
-	possible_matches = regex.findall("((?e)[Cc][Tt][Cc][Cc][TAGCtagc]?[TAGCtagc]?[TAGCtagc]?[Gg][Gg][Aa][Gg][Aa]){e<=2}", gene_sequence)
+	possible_matches = regex.findall("((?e)[Cc][Tt][Cc][Cc][TAGCtagc]?[TAGCtagc]?[TAGCtagc]?[Gg][Gg][Aa][Gg][Aa]){e<=1}", gene_sequence)
+
+	# remove duplicates in possible matches set
+	nonrepeat_matches = []
+	for match in possible_matches:
+		if match not in nonrepeat_matches:
+		    nonrepeat_matches.append(match)
 
 	# obtain information about location and number of errors in each nGRE
-	nGRE_sites = pd.DataFrame(columns = ["gene_id", "chromosome", "nGRE_sequence", "start_site", "end_site", "mismatch_mutations", "insertion_mutations", "deletion_mutations"])
-
+	nGRE_sites = pd.DataFrame(columns = ["gene_id", "chromosome", "nGRE_sequence", "start_site", "end_site", "mutations", "mismatch_mutations", "insertion_mutations", "deletion_mutations"])
 	nGRE_list = []
-
-	for nGRE_sequence in possible_matches:
-		nGRE_information_dict = {}
-
-		# obtain potential nGRE sequence's location in gene sequence
-		pos_information = regex.search(nGRE_sequence, gene_sequence)
-
-		# retrieve and store start/end coordinates of nGRE
-		start_coordinate_regex = regex.findall(r"\(\d+,", str(pos_information))[0]
-		start_coordinate = int (regex.findall("\d+", str(start_coordinate_regex))[0])
-		end_coordinate_regex = regex.findall(r" \d+\)", str(pos_information))[0]
-		end_coordinate = int (regex.findall("\d+", str(end_coordinate_regex))[0])
+	nGRE_information_dict = {}
+	for nGRE_sequence in nonrepeat_matches:
 
 		# compare to perfect nGRE for error counts
-		comparison = (regex.search(r"((?e)[Cc][Tt][Cc][Cc][TAGCtagc]?[TAGCtagc]?[TAGCtagc]?[Gg][Gg][Aa][Gg][Aa]){e<=2}", nGRE_sequence))
+		comparison = (regex.search(r"((?e)[Cc][Tt][Cc][Cc][TAGCtagc]?[TAGCtagc]?[TAGCtagc]?[Gg][Gg][Aa][Gg][Aa]){e<=1}", nGRE_sequence))
 		mutation_counts = comparison.fuzzy_counts
-		mismatch_count = mutation_counts[0]
-		insertion_count = mutation_counts[1]
-		deletion_count = mutation_counts[2]
-		total_mutations = mismatch_count + insertion_count + deletion_count
+		mismatch_count = int(mutation_counts[0])
+		insertion_count = int(mutation_counts[1])
+		deletion_count = int(mutation_counts[2])
+		total_mutations = int(int(mismatch_count) + int(insertion_count) + int(deletion_count))
 
-		# assemble dictionary of nGRE information
-		nGRE_information_dict["gene_id"] = gene_id
-		nGRE_information_dict["chromosome"] = chromosome
-		nGRE_information_dict["nGRE_sequence"] = nGRE_sequence
-		nGRE_information_dict["start_site"] = start_coordinate
-		nGRE_information_dict["end_site"] = end_coordinate
-		nGRE_information_dict["mutations"] = total_mutations
-		nGRE_information_dict["mismatch_mutations"] = mismatch_count
-		nGRE_information_dict["insertion_mutations"] = insertion_count
-		nGRE_information_dict["deletion_mutations"] = deletion_count
+		# find all start/end locations of element
+		nGRE_locations = []
+		match_element_regex = regex.compile(nGRE_to_regex(nGRE_sequence))
+		for match_location in match_element_regex.finditer(gene_sequence):
+		    nGRE_locations.append([match_location.start(), match_location.end()])
 
-		# nGRE_sites = nGRE_sites.append(nGRE_information_dict, ignore_index = True)
-		nGRE_list.append(nGRE_information_dict)
-		# nGRE_information_dict.clear()
+		for location in nGRE_locations:
+			nGRE_information_dict.clear()
+			nGRE_information_dict["start_site"] = location[0]
+			nGRE_information_dict["end_site"] = location[1]
+			nGRE_information_dict["gene_id"] = gene_id
+			nGRE_information_dict["chromosome"] = chromosome
+			nGRE_information_dict["nGRE_sequence"] = nGRE_sequence
+			nGRE_information_dict["mutations"] = int(total_mutations)
+			nGRE_information_dict["mismatch_mutations"] = int(mismatch_count)
+			nGRE_information_dict["insertion_mutations"] = int(insertion_count)
+			nGRE_information_dict["deletion_mutations"] = int(deletion_count)
+			nGRE_sites = nGRE_sites.append(nGRE_information_dict, ignore_index = True)
 
 	regex_end = time.time()
 	regex_runtime = regex_end - regex_start
 	print("Regex search completed, total runtime: {} seconds".format(regex_runtime))
 
-	nGRE_table = pd.DataFrame(columns = ["gene_id", "chromosome", "nGRE_sequence", "start_site", "end_site", "mutations", "mismatch_mutations", "insertion_mutations", "deletion_mutations"])
-	for nGRE in nGRE_list:
-		nGRE_table = nGRE_table.append(nGRE, ignore_index = True)
 
-	return nGRE_table
+	# commented out while trying to replace nGRE_list
+	# nGRE_table = pd.DataFrame(columns = ["gene_id", "chromosome", "nGRE_sequence", "start_site", "end_site", "mutations", "mismatch_mutations", "insertion_mutations", "deletion_mutations"])
+	# for nGRE in nGRE_list:
+		# nGRE_table = nGRE_table.append(nGRE, ignore_index = True)
+
+	return nGRE_sites
 
 
 def csv_parse(treatment, regulation):
@@ -86,10 +87,18 @@ def csv_parse(treatment, regulation):
 		potential_nGREs = regexSearch(interest_gene_sequence, gene_id, gene_chromosome, gene_strand)
 		potential_nGREs.to_csv("nGRE_parse_output/" + treatment + "/" + regulation + "_gene_output.csv", mode="a", index=False, header=False)
 
-def main():
+def nGRE_to_regex(nGRE_sequence):
+	nGRE_sequence_regex = ""
+	for nucleotide in nGRE_sequence:
+		nGRE_sequence_regex += "["
+		nGRE_sequence_regex += nucleotide.upper() + nucleotide.lower()
+		nGRE_sequence_regex += "]"
 
+	return nGRE_sequence_regex
+
+def main():
 	start = time.time()
-	csv_parse("OVX_ADX_F_DexvsOVX_ADX_F_Veh", "upregulated")
+	csv_parse("OVX_ADX_F_DexvsOVX_ADX_F_Veh", "downregulated")
 	end = time.time()
 
 	runtime = end - start

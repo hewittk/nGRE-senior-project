@@ -46,7 +46,7 @@ def matches_df(matches, target_element, regex_element, gene_sequence, maximum_mu
     length = count_length(regex_element)
     print("Length: ", length)
 
-    # remove repeats from matches list
+    # remove duplicates in matches list
     nonrepeat_matches = []
     for match in matches:
         if match not in nonrepeat_matches:
@@ -61,6 +61,7 @@ def matches_df(matches, target_element, regex_element, gene_sequence, maximum_mu
     element_information = {}
     for element in nonrepeat_matches:
 
+        # handle tuple cases
         if type(element) == tuple:
             match_element = str(element[0])
         else:

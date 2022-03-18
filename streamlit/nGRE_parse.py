@@ -45,6 +45,14 @@ def nGRE_info_dataframe(possible_nGREs, gene_sequence):
     nGRE_information = {}
     for nGRE_sequence in possible_nGREs:
 
+        comparison = (regex.search(r"((?e)" + nGRE_sequence + "){e<=" + str(maximum_mutations) + "}", str(match_element)))
+        print(comparison)
+        mutation_counts = comparison.fuzzy_counts
+        mismatch_count = mutation_counts[0]
+        insertion_count = mutation_counts[1]
+        deletion_count = mutation_counts[2]
+        total_mutations = mismatch_count + insertion_count + deletion_count
+
         nGRE_information["sequence"] = nGRE_sequence
         pos_information = regex.search(nGRE_sequence, gene_sequence)
 
