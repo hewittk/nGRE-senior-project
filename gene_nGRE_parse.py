@@ -98,7 +98,7 @@ def nGRE_to_regex(nGRE_sequence):
 
 def main():
 	start = time.time()
-	csv_parse("OVX_ADX_F_DexvsOVX_ADX_F_Veh", "downregulated")
+	csv_parse("ADX_F_DexvsADX_F_Veh", "upregulated")
 	end = time.time()
 
 	runtime = end - start
