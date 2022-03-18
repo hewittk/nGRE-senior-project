@@ -1,16 +1,24 @@
-In the ADX_F_DexvsADX_F_Veh upregulated dataset (length 5084495 genes):
-Number of potential nGREs with zero mutations found:  16067
-Number of potential nGREs with one mutation found:  464324
+In the OVX_ADX_F_DexvsOVX_ADX_F_Veh upregulated dataset (length 731698 genes):
+Number of potential nGREs with zero mutations found:  22934
+Percent of genes containing nGREs with zero mutations:  3.13 %
+Number of potential nGREs with one mutation found:  708764
+Percent of genes containing nGREs with one mutation:  96.87 %
  
-In the ADX_F_DexvsADX_F_Veh downregulated dataset (length 4178871 genes):
-Number of potential nGREs with zero mutations found:  14724
-Number of potential nGREs with one mutation found:  394197
+In the OVX_ADX_F_DexvsOVX_ADX_F_Veh downregulated dataset (length 631817 genes):
+Number of potential nGREs with zero mutations found:  20567
+Percent of genes containing nGREs with zero mutations:  3.26 %
+Number of potential nGREs with one mutation found:  611250
+Percent of genes containing nGREs with one mutation:  96.74 %
  
-In the OVX_ADX_F_DexvsOVX_ADX_F_Veh upregulated dataset (length 6665816 genes):
-Number of potential nGREs with zero mutations found:  21798
-Number of potential nGREs with one mutation found:  614275
+In the ADX_F_DexvsADX_F_Veh upregulated dataset (length 548584 genes):
+Number of potential nGREs with zero mutations found:  16904
+Percent of genes containing nGREs with zero mutations:  3.08 %
+Number of potential nGREs with one mutation found:  531680
+Percent of genes containing nGREs with one mutation:  96.92 %
  
-In the OVX_ADX_F_DexvsOVX_ADX_F_Veh downregulated dataset (length 5619018 genes):
-Number of potential nGREs with zero mutations found:  19359
-Number of potential nGREs with one mutation found:  526550
+In the ADX_F_DexvsADX_F_Veh downregulated dataset (length 479827 genes):
+Number of potential nGREs with zero mutations found:  15683
+Percent of genes containing nGREs with zero mutations:  3.27 %
+Number of potential nGREs with one mutation found:  464144
+Percent of genes containing nGREs with one mutation:  96.73 %
  
