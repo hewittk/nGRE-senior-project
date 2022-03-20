@@ -1,0 +1,12 @@
+OVX_ADX_F_DexvsOVX_ADX_F_Veh downregulated genes 
+nGRE_locations: {'Pre transcription start site': 9134, 'Pre coding start site': 667, 'During coding site': 0, 'After coding site': 9064, 'After transcription site': 1701}
+
+OVX_ADX_F_DexvsOVX_ADX_F_Veh upregulated genes 
+nGRE_locations: {'Pre transcription start site': 10084, 'Pre coding start site': 1029, 'During coding site': 0, 'After coding site': 10250, 'After transcription site': 1571}
+
+ADX_F_DexvsADX_F_Veh downregulated genes 
+nGRE_locations: {'Pre transcription start site': 6516, 'Pre coding start site': 569, 'During coding site': 0, 'After coding site': 7352, 'After transcription site': 1246}
+
+ADX_F_DexvsADX_F_Veh upregulated genes 
+nGRE_locations: {'Pre transcription start site': 7423, 'Pre coding start site': 755, 'During coding site': 0, 'After coding site': 7586, 'After transcription site': 1140}
+

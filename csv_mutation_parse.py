@@ -31,9 +31,7 @@ def fewer_mutations_parse(treatment, regulation):
         print("Percent of genes containing nGREs with one mutation: ", str(percent_one_mutations), "%", file = output_file)
         print(" ", file = output_file)
 
-    print(fewer_mutations_table)
-
-    # fewer_mutations_table.to_csv("nGRE_parse_output/" + treatment + "/zero_to_one_mutations_" + regulation + "_gene_output.csv")
+    fewer_mutations_table.to_csv("nGRE_parse_output/" + treatment + "/zero_to_one_mutations_" + regulation + "_gene_output.csv")
 
 def main():
 

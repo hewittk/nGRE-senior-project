@@ -2,7 +2,7 @@ import pandas as pd
 import csv
 import regex
 
-nGRE_locations = {"Pre transcription start site":0, "Pre coding start site":0, "During coding site":0, "After coding site":0}
+nGRE_locations = {"Pre transcription start site":0, "Pre coding start site":0, "During coding site":0, "After coding site":0, "After transcription site":0}
 
 # retrieve gene's chr, trx start site, coding start site, coding end site, and trx end site
 def retrieve_gene_sites(gene_id, treatment, regulation, nGRE_start, nGRE_end):
@@ -52,6 +52,10 @@ def cumulate_sites(gene_id, treatment, regulation, nGRE_start, nGRE_end, relativ
         nGRE_locations["During coding site"] += 1
     elif ((int(nGRE_start) > relative_txStart) and (int(nGRE_start) < relative_txEnd)):
         nGRE_locations["After coding site"] += 1
+    elif ((int(nGRE_start) > relative_txEnd) and (int(nGRE_start) < (relative_txEnd + 5000))):
+        nGRE_locations["After transcription site"] += 1
+    else:
+        print("Error: nGRE site of " + nGRE_start + " doesn't appear to be in range 0 to " + str((relative_txEnd + 5000)))
 
 
 def main():
@@ -68,16 +72,24 @@ def main():
                 gene_id = row[0]
                 nGRE_start = row[3] # nGRE start site within retrieved gene
                 nGRE_end = row[4] # nGRE end site within retrieved gene
+                nGRE_mutations = row[5]
 
                 if(gene_id != previous_gene_id):
                     txStart, cdsStart, cdsEnd, txEnd = retrieve_gene_sites(gene_id, treatment, regulation, nGRE_start, nGRE_end)
                     relative_txStart, relative_cdStart, relative_cdEnd, relative_txEnd = classify_sites(gene_id, treatment, regulation, nGRE_start, nGRE_end, txStart, cdsStart, cdsEnd, txEnd)
 
-                cumulate_sites(gene_id, treatment, regulation, nGRE_start, nGRE_end, relative_txStart, relative_cdStart, relative_cdEnd, relative_txEnd)
+                if(int(nGRE_mutations) == 0):
+                    cumulate_sites(gene_id, treatment, regulation, nGRE_start, nGRE_end, relative_txStart, relative_cdStart, relative_cdEnd, relative_txEnd)
 
-                print("nGRE_locations: " + str(nGRE_locations))
+                    print("nGRE_locations: " + str(nGRE_locations))
 
             previous_gene_id = gene_id
+
+    locations_file = open("nGRE_parse_output/zero_mutation_nGRE_location_parse_statistics.txt", "a")
+    locations_file.write(treatment + " " + regulation + " genes \n")
+    locations_file.write(("nGRE_locations: " + str(nGRE_locations) + "\n\n"))
+    locations_file.close()
+
 
 if __name__ == "__main__":
     main()
