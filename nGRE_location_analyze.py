@@ -2,6 +2,8 @@ import pandas as pd
 import csv
 import regex
 
+nGRE_locations = {"Pre transcription start site":0, "Pre coding start site":0, "During coding site":0, "After coding site":0}
+
 # retrieve gene's chr, trx start site, coding start site, coding end site, and trx end site
 def retrieve_gene_sites(gene_id, treatment, regulation, nGRE_start, nGRE_end):
     genes_df = pd.read_csv("annotated_gene_datasets/" + treatment + "/" + regulation + "_genes/" + regulation + "_output_with_gene_names_known_sequences.tsv", sep = "\t")
@@ -28,8 +30,8 @@ def retrieve_gene_sites(gene_id, treatment, regulation, nGRE_start, nGRE_end):
 # classify what regions of gene nGREs were found in
 def classify_sites(gene_id, treatment, regulation, nGRE_start, nGRE_end, gene_txStart, gene_cdsStart, gene_cdsEnd, gene_txEnd):
     # get gene cd/tx starts/ends relative to length of gene
-    relative_txStart = 50000
-    relative_cdStart = 50000 + (gene_cdsStart - gene_txStart)
+    relative_txStart = 30000
+    relative_cdStart = 30000 + (gene_cdsStart - gene_txStart)
     relative_cdEnd = relative_cdStart + (gene_cdsEnd - gene_cdsStart)
     relative_txEnd = relative_cdEnd + (gene_txEnd - gene_cdsEnd)
 
@@ -38,6 +40,18 @@ def classify_sites(gene_id, treatment, regulation, nGRE_start, nGRE_end, gene_tx
     print("relative_cdStart: " + str(relative_cdStart))
     print("relative_cdEnd: " + str(relative_cdEnd))
     print("relative_txEnd: " + str(relative_txEnd))
+
+    return relative_txStart, relative_cdStart, relative_cdEnd, relative_txEnd
+
+def cumulate_sites(gene_id, treatment, regulation, nGRE_start, nGRE_end, relative_txStart, relative_cdStart, relative_cdEnd, relative_txEnd):
+    if (int(nGRE_start) < relative_txStart):
+        nGRE_locations["Pre transcription start site"] += 1
+    elif (int(nGRE_start) < relative_cdStart):
+        nGRE_locations["Pre coding start site"] += 1
+    elif (int(nGRE_start) < relative_txStart):
+        nGRE_locations["During coding site"] += 1
+    elif ((int(nGRE_start) > relative_txStart) and (int(nGRE_start) < relative_txEnd)):
+        nGRE_locations["After coding site"] += 1
 
 
 def main():
@@ -51,17 +65,17 @@ def main():
         data = csv.reader(potential_nGREs)
         for row in data:
             if(row[0] != "gene_id"): # if isn't first row
-                print("In if statement")
                 gene_id = row[0]
                 nGRE_start = row[3] # nGRE start site within retrieved gene
                 nGRE_end = row[4] # nGRE end site within retrieved gene
 
                 if(gene_id != previous_gene_id):
                     txStart, cdsStart, cdsEnd, txEnd = retrieve_gene_sites(gene_id, treatment, regulation, nGRE_start, nGRE_end)
-                    classify_sites(gene_id, treatment, regulation, nGRE_start, nGRE_end, txStart, cdsStart, cdsEnd, txEnd)
-            # else:
-            # count genes in each region for current gene_id
-            # record and switch to new gene_id if get to next gene_id
+                    relative_txStart, relative_cdStart, relative_cdEnd, relative_txEnd = classify_sites(gene_id, treatment, regulation, nGRE_start, nGRE_end, txStart, cdsStart, cdsEnd, txEnd)
+
+                cumulate_sites(gene_id, treatment, regulation, nGRE_start, nGRE_end, relative_txStart, relative_cdStart, relative_cdEnd, relative_txEnd)
+
+                print("nGRE_locations: " + str(nGRE_locations))
 
             previous_gene_id = gene_id
 
