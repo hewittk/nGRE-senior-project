@@ -55,13 +55,16 @@ def find_mutual_genes(list1, list2):
 def find_unique_genes(list1, list2):
     """Return list of unique genes between two given gene lists."""
 
-    unique_list1_genes = []
+    unique_genes = []
 
     for list1_gene in list1:
         if not(list1_gene in list2):
-            unique_list1_genes.append(list1_gene)
+            unique_genes.append(list1_gene)
+    for list2_gene in list2:
+        if not(list2_gene in list1):
+            unique_genes.append(list2_gene)
 
-    return unique_list1_genes
+    return unique_genes
 
 
 def main():

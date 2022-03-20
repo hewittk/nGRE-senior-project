@@ -1,5 +1,5 @@
 import pytest
-from . import fold_change_analysis
+import fold_change_analysis
 
 def test_find_unique_genes():
     fruits = ["apple", "orange", "tomato"]
