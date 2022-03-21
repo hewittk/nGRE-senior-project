@@ -17,7 +17,8 @@ def up_down_amounts(DEG_dataframe):
     downregulated_genes = []
 
     for index, row in DEG_dataframe.iterrows():
-        if(row['pvalue']) < minimum_p_value:
+        print(row['pvalue'])
+        if(row['pvalue']) <= minimum_p_value:
             if(row['Fold_Change']) > 1:
                 upregulated_genes.append(row['Gene_Name'])
             elif(row['Fold_Change']) < 1:
@@ -27,7 +28,7 @@ def up_down_amounts(DEG_dataframe):
 
 
 def write_to_file(treatment, upregulated_genes, downregulated_genes):
-    """Write given lists of genes that are upregulated/downregulated to files."""
+    """Write given lists of genes that are upregulated/downregulated in a given treatment to files."""
 
     with open("annotated_gene_datasets/" + treatment + "/upregulated_genes/upregulated.txt", "w") as file:
         for gene_name in upregulated_genes:
