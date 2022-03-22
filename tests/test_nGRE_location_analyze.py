@@ -29,4 +29,19 @@ def test_classify_sites():
     assert relative_gene_txEnd == 31755
 
 def test_cumulate_sites():
-    
+    nGRE_location_analyze.cumulate_sites(1000, 30000, 30000, 50000, 50006)
+    print(nGRE_location_analyze.nGRE_locations["Pre transcription start site"])
+    assert nGRE_location_analyze.nGRE_locations["Pre transcription start site"] == 1
+
+    nGRE_location_analyze.cumulate_sites(32000, 30000, 31000, 46000, 46000)
+    assert nGRE_location_analyze.nGRE_locations["After coding site"] == 1
+
+    nGRE_location_analyze.cumulate_sites(48000, 30000, 31000, 46000, 46000)
+    nGRE_location_analyze.cumulate_sites(30005, 30000, 31000, 46000, 46000)
+    nGRE_location_analyze.cumulate_sites(29000, 30000, 31000, 46000, 46000)
+    nGRE_location_analyze.cumulate_sites(48000, 30000, 31000, 46000, 46000)
+    nGRE_location_analyze.cumulate_sites(80000, 30000, 31000, 46000, 46000)
+    nGRE_location_analyze.cumulate_sites(45999, 30000, 31000, 46000, 46000)
+    nGRE_location_analyze.cumulate_sites(25000, 30000, 31000, 46000, 46000)
+
+    assert nGRE_location_analyze.nGRE_locations["Pre transcription start site"] == 3

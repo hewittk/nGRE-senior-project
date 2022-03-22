@@ -57,7 +57,7 @@ def cumulate_sites(nGRE_start, relative_txStart, relative_cdStart, relative_cdEn
     elif ((int(nGRE_start) > relative_txEnd) and (int(nGRE_start) < (relative_txEnd + 5000))):
         nGRE_locations["After transcription site"] += 1
     else:
-        print("Error: nGRE site of " + nGRE_start + " doesn't appear to be in range 0 to " + str((relative_txEnd + 5000)))
+        print("Error: nGRE site of " + str(nGRE_start) + " doesn't appear to be in range 0 to " + str((relative_txEnd + 5000)))
 
 
 def main():
