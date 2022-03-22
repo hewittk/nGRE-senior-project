@@ -6,6 +6,7 @@ nGRE_locations = {"Pre transcription start site":0, "Pre coding start site":0, "
 
 # retrieve gene's chr, trx start site, coding start site, coding end site, and trx end site
 def retrieve_gene_sites(gene_id, treatment, regulation, nGRE_start, nGRE_end):
+
     genes_df = pd.read_csv("annotated_gene_datasets/" + treatment + "/" + regulation + "_genes/" + regulation + "_output_with_gene_names_known_sequences.tsv", sep = "\t")
 
     print("retrieve_gene_sites gene_id: " + gene_id)

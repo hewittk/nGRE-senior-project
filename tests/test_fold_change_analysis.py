@@ -16,3 +16,9 @@ def test_up_down_amounts():
     genes_returned = fold_change_analysis.up_down_amounts(sample_df)
     assert genes_returned[0] == ["yentl", "tal3"]
     assert genes_returned[1] == ["agre", "ipjg", "pront2", "cral"]
+
+def test_find_mutual_genes():
+    list1 = ["cyx", "agre", "ipjg", "tal3"]
+    list2 = ["pront2", "cyx", "cral", "agre"]
+
+    assert fold_change_analysis.find_mutual_genes(list1, list2) == ["cyx", "agre"]
