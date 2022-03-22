@@ -4,15 +4,14 @@ import regex
 
 nGRE_locations = {"Pre transcription start site":0, "Pre coding start site":0, "During coding site":0, "After coding site":0, "After transcription site":0}
 
-# retrieve gene's chr, trx start site, coding start site, coding end site, and trx end site
 def retrieve_gene_sites(gene_id, treatment, regulation, nGRE_start, nGRE_end):
+    """Return gene's transcription and coding start/end sites on chromosome."""
 
     genes_df = pd.read_csv("annotated_gene_datasets/" + treatment + "/" + regulation + "_genes/" + regulation + "_output_with_gene_names_known_sequences.tsv", sep = "\t")
 
     print("retrieve_gene_sites gene_id: " + gene_id)
     separated_id = regex.search(r'_\w+\.?\d+', gene_id)
     enmust_id = separated_id.group(0)[1:]
-    print("enmust_id: " + enmust_id)
 
     # retrieve start sites within gene
     enmust_id_info = genes_df.loc[genes_df['#mm10.knownGene.name'] == enmust_id]
@@ -81,8 +80,6 @@ def main():
 
                 if(int(nGRE_mutations) == 0):
                     cumulate_sites(gene_id, treatment, regulation, nGRE_start, nGRE_end, relative_txStart, relative_cdStart, relative_cdEnd, relative_txEnd)
-
-                    print("nGRE_locations: " + str(nGRE_locations))
 
             previous_gene_id = gene_id
 
