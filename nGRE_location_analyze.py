@@ -59,10 +59,9 @@ def cumulate_sites(nGRE_start, relative_txStart, relative_cdStart, relative_cdEn
     else:
         print("Error: nGRE site of " + str(nGRE_start) + " doesn't appear to be in range 0 to " + str((relative_txEnd + 5000)))
 
-
 def main():
-    treatment = "ADX_F_DexvsADX_F_Veh"
-    regulation = "upregulated"
+    treatment = "OVX_ADX_F_DexvsOVX_ADX_F_Veh"
+    regulation = "downregulated"
     potential_nGRE_file = "nGRE_parse_output/" + treatment + "/" + regulation + "_gene_output.csv"
 
     previous_gene_id = ""
