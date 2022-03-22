@@ -9,13 +9,13 @@ def retrieve_gene_sites(gene_id, treatment, regulation, nGRE_start, nGRE_end):
 
     genes_df = pd.read_csv("annotated_gene_datasets/" + treatment + "/" + regulation + "_genes/" + regulation + "_output_with_gene_names_known_sequences.tsv", sep = "\t")
 
+    # derive gene's enmust id to search for in csv file
     print("retrieve_gene_sites gene_id: " + gene_id)
     separated_id = regex.search(r'_\w+\.?\d+', gene_id)
     enmust_id = separated_id.group(0)[1:]
 
-    # retrieve start sites within gene
+    # retrieve start and end sites of gene
     enmust_id_info = genes_df.loc[genes_df['#mm10.knownGene.name'] == enmust_id]
-
     txStart_data = enmust_id_info['mm10.knownGene.txStart']
     txStart = txStart_data.values[0]
     cdsStart_data = enmust_id_info['mm10.knownGene.cdsStart']
@@ -27,9 +27,9 @@ def retrieve_gene_sites(gene_id, treatment, regulation, nGRE_start, nGRE_end):
 
     return txStart, cdsStart, cdsEnd, txEnd
 
-# classify what regions of gene nGREs were found in
 def classify_sites(gene_id, treatment, regulation, nGRE_start, nGRE_end, gene_txStart, gene_cdsStart, gene_cdsEnd, gene_txEnd):
-    # get gene cd/tx starts/ends relative to length of gene
+    """Classify relative start/end landmark sites of gene within returned gene site instead of within chromosome."""
+
     relative_txStart = 30000
     relative_cdStart = 30000 + (gene_cdsStart - gene_txStart)
     relative_cdEnd = relative_cdStart + (gene_cdsEnd - gene_cdsStart)
@@ -44,6 +44,8 @@ def classify_sites(gene_id, treatment, regulation, nGRE_start, nGRE_end, gene_tx
     return relative_txStart, relative_cdStart, relative_cdEnd, relative_txEnd
 
 def cumulate_sites(gene_id, treatment, regulation, nGRE_start, nGRE_end, relative_txStart, relative_cdStart, relative_cdEnd, relative_txEnd):
+    """Add nGRE site location to running total of nGRE site locations found in dataset."""
+
     if (int(nGRE_start) < relative_txStart):
         nGRE_locations["Pre transcription start site"] += 1
     elif (int(nGRE_start) < relative_cdStart):
