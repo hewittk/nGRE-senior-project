@@ -27,3 +27,6 @@ def test_classify_sites():
     assert relative_gene_cdStart == 30005
     assert relative_gene_cdEnd == 31295
     assert relative_gene_txEnd == 31755
+
+def test_cumulate_sites():
+    

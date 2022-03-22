@@ -43,7 +43,7 @@ def classify_sites(gene_id, treatment, regulation, gene_txStart, gene_cdsStart, 
 
     return relative_txStart, relative_cdStart, relative_cdEnd, relative_txEnd
 
-def cumulate_sites(gene_id, treatment, regulation, nGRE_start, nGRE_end, relative_txStart, relative_cdStart, relative_cdEnd, relative_txEnd):
+def cumulate_sites(nGRE_start, relative_txStart, relative_cdStart, relative_cdEnd, relative_txEnd):
     """Add nGRE site location to running total of nGRE site locations found in dataset."""
 
     if (int(nGRE_start) < relative_txStart):
@@ -81,14 +81,14 @@ def main():
                     relative_txStart, relative_cdStart, relative_cdEnd, relative_txEnd = classify_sites(gene_id, treatment, regulation, txStart, cdsStart, cdsEnd, txEnd)
 
                 if(int(nGRE_mutations) == 0):
-                    cumulate_sites(gene_id, treatment, regulation, nGRE_start, nGRE_end, relative_txStart, relative_cdStart, relative_cdEnd, relative_txEnd)
+                    cumulate_sites(nGRE_start, relative_txStart, relative_cdStart, relative_cdEnd, relative_txEnd)
 
             previous_gene_id = gene_id
 
-    locations_file = open("nGRE_parse_output/zero_mutation_nGRE_location_parse_statistics.txt", "a")
-    locations_file.write(treatment + " " + regulation + " genes \n")
-    locations_file.write(("nGRE_locations: " + str(nGRE_locations) + "\n\n"))
-    locations_file.close()
+    # locations_file = open("nGRE_parse_output/zero_mutation_nGRE_location_parse_statistics.txt", "a")
+    # locations_file.write(treatment + " " + regulation + " genes \n")
+    # locations_file.write(("nGRE_locations: " + str(nGRE_locations) + "\n\n"))
+    # locations_file.close()
 
 
 if __name__ == "__main__":
