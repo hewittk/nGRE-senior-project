@@ -50,7 +50,7 @@ def cumulate_sites(nGRE_start, relative_txStart, relative_cdStart, relative_cdEn
         nGRE_locations["Pre transcription start site"] += 1
     elif (int(nGRE_start) < relative_cdStart):
         nGRE_locations["Pre coding start site"] += 1
-    elif (int(nGRE_start) < relative_txStart):
+    elif (int(nGRE_start) < relative_cdEnd):
         nGRE_locations["During coding site"] += 1
     elif ((int(nGRE_start) > relative_txStart) and (int(nGRE_start) < relative_txEnd)):
         nGRE_locations["After coding site"] += 1
@@ -85,10 +85,10 @@ def main():
 
             previous_gene_id = gene_id
 
-    # locations_file = open("nGRE_parse_output/zero_mutation_nGRE_location_parse_statistics.txt", "a")
-    # locations_file.write(treatment + " " + regulation + " genes \n")
-    # locations_file.write(("nGRE_locations: " + str(nGRE_locations) + "\n\n"))
-    # locations_file.close()
+    locations_file = open("nGRE_parse_output/zero_mutation_nGRE_location_parse_statistics.txt", "a")
+    locations_file.write(treatment + " " + regulation + " genes \n")
+    locations_file.write(("nGRE_locations: " + str(nGRE_locations) + "\n\n"))
+    locations_file.close()
 
 
 if __name__ == "__main__":
