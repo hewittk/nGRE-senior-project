@@ -4,7 +4,7 @@ import regex
 
 nGRE_locations = {"Pre transcription start site":0, "Pre coding start site":0, "During coding site":0, "After coding site":0, "After transcription site":0}
 
-def retrieve_gene_sites(gene_id, treatment, regulation, nGRE_start, nGRE_end):
+def retrieve_gene_sites(gene_id, treatment, regulation):
     """Return gene's transcription and coding start/end sites on chromosome."""
 
     genes_df = pd.read_csv("annotated_gene_datasets/" + treatment + "/" + regulation + "_genes/" + regulation + "_output_with_gene_names_known_sequences.tsv", sep = "\t")
@@ -27,7 +27,7 @@ def retrieve_gene_sites(gene_id, treatment, regulation, nGRE_start, nGRE_end):
 
     return txStart, cdsStart, cdsEnd, txEnd
 
-def classify_sites(gene_id, treatment, regulation, nGRE_start, nGRE_end, gene_txStart, gene_cdsStart, gene_cdsEnd, gene_txEnd):
+def classify_sites(gene_id, treatment, regulation, gene_txStart, gene_cdsStart, gene_cdsEnd, gene_txEnd):
     """Classify relative start/end landmark sites of gene within returned gene site instead of within chromosome."""
 
     relative_txStart = 30000
@@ -77,8 +77,8 @@ def main():
                 nGRE_mutations = row[5]
 
                 if(gene_id != previous_gene_id):
-                    txStart, cdsStart, cdsEnd, txEnd = retrieve_gene_sites(gene_id, treatment, regulation, nGRE_start, nGRE_end)
-                    relative_txStart, relative_cdStart, relative_cdEnd, relative_txEnd = classify_sites(gene_id, treatment, regulation, nGRE_start, nGRE_end, txStart, cdsStart, cdsEnd, txEnd)
+                    txStart, cdsStart, cdsEnd, txEnd = retrieve_gene_sites(gene_id, treatment, regulation)
+                    relative_txStart, relative_cdStart, relative_cdEnd, relative_txEnd = classify_sites(gene_id, treatment, regulation, txStart, cdsStart, cdsEnd, txEnd)
 
                 if(int(nGRE_mutations) == 0):
                     cumulate_sites(gene_id, treatment, regulation, nGRE_start, nGRE_end, relative_txStart, relative_cdStart, relative_cdEnd, relative_txEnd)
