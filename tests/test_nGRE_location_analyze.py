@@ -36,13 +36,19 @@ def test_cumulate_sites():
     assert nGRE_location_analyze.nGRE_locations["During coding site"] == 1
 
     nGRE_location_analyze.cumulate_sites(32000, 30000, 31000, 46000, 46000)
-    assert nGRE_location_analyze.nGRE_locations["After coding site"] == 1
+    assert nGRE_location_analyze.nGRE_locations["During coding site"] == 2
 
-    nGRE_location_analyze.cumulate_sites(48000, 30000, 31000, 46000, 46000)
+    nGRE_location_analyze.cumulate_sites(50355, 30000, 31000, 46000, 46000)
+    nGRE_location_analyze.cumulate_sites(51361, 30000, 31000, 46000, 46000)
     nGRE_location_analyze.cumulate_sites(30005, 30000, 31000, 46000, 46000)
     nGRE_location_analyze.cumulate_sites(29000, 30000, 31000, 46000, 46000)
     nGRE_location_analyze.cumulate_sites(48000, 30000, 31000, 46000, 46000)
     nGRE_location_analyze.cumulate_sites(80000, 30000, 31000, 46000, 46000)
     nGRE_location_analyze.cumulate_sites(45999, 30000, 31000, 46000, 46000)
     nGRE_location_analyze.cumulate_sites(25000, 30000, 31000, 46000, 46000)
+    nGRE_location_analyze.cumulate_sites(46009, 30000, 31000, 46000, 46015)
     assert nGRE_location_analyze.nGRE_locations["Pre transcription start site"] == 3
+    assert nGRE_location_analyze.nGRE_locations["Pre coding start site"] == 1
+    assert nGRE_location_analyze.nGRE_locations["During coding site"] == 3
+    assert nGRE_location_analyze.nGRE_locations["After coding site"] == 1
+    assert nGRE_location_analyze.nGRE_locations["After transcription site"] == 2

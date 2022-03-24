@@ -4,7 +4,6 @@ nGRE_locations: {'Pre transcription start site': 230871, 'Pre coding start site'
 ADX_F_DexvsADX_F_Veh downregulated genes 
 nGRE_locations: {'Pre transcription start site': 191509, 'Pre coding start site': 18079, 'During coding site': 170079, 'After coding site': 66741, 'After transcription site': 33411}
 
-
 OVX_ADX_F_DexvsOVX_ADX_F_Veh upregulated genes 
 nGRE_locations: {'Pre transcription start site': 301840, 'Pre coding start site': 35151, 'During coding site': 232097, 'After coding site': 110990, 'After transcription site': 51607}
 
