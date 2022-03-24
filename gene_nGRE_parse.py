@@ -8,7 +8,6 @@ import pandas as pd
 
 nGRE_consensus_sequence = "CTCCGGAGA"
 
-
 def regexSearch(gene_sequence, gene_id, chromosome, strand):
 	"""Find sequences and positions of relative matches to nGRE consensus sequence in gene."""
 
@@ -59,12 +58,6 @@ def regexSearch(gene_sequence, gene_id, chromosome, strand):
 	regex_end = time.time()
 	regex_runtime = regex_end - regex_start
 	print("Regex search completed, total runtime: {} seconds".format(regex_runtime))
-
-
-	# commented out while trying to replace nGRE_list
-	# nGRE_table = pd.DataFrame(columns = ["gene_id", "chromosome", "nGRE_sequence", "start_site", "end_site", "mutations", "mismatch_mutations", "insertion_mutations", "deletion_mutations"])
-	# for nGRE in nGRE_list:
-		# nGRE_table = nGRE_table.append(nGRE, ignore_index = True)
 
 	return nGRE_sites
 
