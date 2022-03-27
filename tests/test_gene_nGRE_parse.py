@@ -24,6 +24,8 @@ def test_regexSearch():
     STAT1_df = gene_nGRE_parse.regexSearch(STAT1_sequence, "Stat1", "chr1", "+")
     print(STAT1_df.values)
     assert "CTCCAGGACA" in STAT1_df.values
+    assert "CACCGGAGA" in STAT1_df.values
+
 
 def test_nGRE_to_regex():
     """Test nGRE_to_regex's casting gene sequence's nucleotides into regex format."""

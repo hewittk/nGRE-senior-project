@@ -9,12 +9,11 @@ with open("test_gene_sequences/TSLP.txt", "w") as file:
     file.write(TSLP_sequence)
     file.close()
 
-STAT1_request = requests.get("http://api.genome.ucsc.edu/getData/sequence?genome=mm8;chrom=chr1;start=52034034;end=52110508")
+STAT1_request = requests.get("http://api.genome.ucsc.edu/getData/sequence?genome=mm10;chrom=chr1;start=52089454;end=52166865")
 print("Status Code: ", STAT1_request.status_code)
 STAT1_response = STAT1_request.json()
 STAT1_sequence = STAT1_response['dna']
 print(STAT1_sequence)
-print(STAT1_sequence.index("CTCCAGGACA"))
 with open("test_gene_sequences/STAT1.txt", "w") as file:
     file.write(STAT1_sequence)
     file.close()
