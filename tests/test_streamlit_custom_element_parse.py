@@ -30,6 +30,6 @@ def test_element_to_regex():
 
 def test_sequence_search():
     sample_nGRE_search = custom_element_parse.sequence_search("TAGTAGCATGGGATACAGCTCCGGGAGATAGCCTGATCATGGGCTCCAAGGAGAATGATCCAGGAGA", "[Cc][Tt][Cc][Cc]([AaCcTtGg]){0,2}[Gg][Gg][Aa][Gg][Aa]", 0)
-    # assert "CTCCGGGAGA" in sample_nGRE_search
-    # assert "CTCCAAGGAGA" in sample_nGRE_search
+    assert "CTCCGGGAGA" in sample_nGRE_search
+    assert "CTCCAAGGAGA" in sample_nGRE_search
     # assert "ATCCAGGAGA" not in sample_nGRE_search

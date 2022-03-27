@@ -61,12 +61,6 @@ def matches_df(matches, target_element, regex_element, gene_sequence, maximum_mu
     element_information = {}
     for element in nonrepeat_matches:
 
-        # handle tuple cases
-        if type(element) == tuple:
-            match_element = str(element[0])
-        else:
-            match_element = element
-
         # find number of mutations in sequence
         comparison = (regex.search(r"((?e)" + regex_element + "){e<=" + str(maximum_mutations) + "}", str(match_element)))
         print(comparison)
@@ -121,6 +115,10 @@ def sequence_search(gene_sequence, regex_element, maximum_mutations):
     print("Element matches: " + str(element_matches))
     st.write(element_matches)
     st.write(type(element_matches))
+
+    for index in range(len(element_matches)):
+        if type(element_matches[index]) == tuple:
+            element_matches[index] = str(element_matches[index][0])
 
     return element_matches
 
