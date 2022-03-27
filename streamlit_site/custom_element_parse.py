@@ -31,13 +31,13 @@ def main():
         st.write(target_element)
         regex_element = element_to_regex(target_element)
 
-    print("Regex element in main: " + regex_element)
+        print("Regex element in main: " + regex_element)
 
-    st.write(gene_sequence)
+        st.write(gene_sequence)
 
-    matches = sequence_search(gene_sequence, regex_element, maximum_mutations)
+        matches = sequence_search(gene_sequence, regex_element, maximum_mutations)
 
-    matches_df(matches, target_element, regex_element, gene_sequence, maximum_mutations, mismatch_penalty, insertion_penalty, deletion_penalty)
+        matches_df(matches, target_element, regex_element, gene_sequence, maximum_mutations, mismatch_penalty, insertion_penalty, deletion_penalty)
 
 def matches_df(matches, target_element, regex_element, gene_sequence, maximum_mutations, mismatch_penalty, insertion_penalty, deletion_penalty):
     """Score matches to custom element based on amount of mutations."""
