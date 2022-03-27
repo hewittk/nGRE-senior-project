@@ -33,4 +33,3 @@ def test_sequence_search():
     assert "CTCCGGGAGA" in sample_nGRE_search
     assert "CTCCAAGGAGA" in sample_nGRE_search
     assert "ATCCAGGAGA" not in sample_nGRE_search
-    
