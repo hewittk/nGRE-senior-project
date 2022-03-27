@@ -7,24 +7,24 @@ def test_regexSearch():
     sample_sequence = "TAGTAGCATGGGATACAGCTCCGGGAGATAGCCTGATCATGGGCTCCAAGGAGAATGATCCAGGAGA"
     sample_sequence_df = gene_nGRE_parse.regexSearch(sample_sequence, "sample", "chr18", "+")
     print(sample_sequence_df.values)
-    assert "CTCCGGGAGA" in sample_sequence_df.values
-    assert "CTCCAAGGAGA" in sample_sequence_df.values
-    assert "ATCCAGGAGA" in sample_sequence_df.values
+    assert "CTCCGGGAGA" or "ctccgggaga" in sample_sequence_df.values
+    assert "CTCCAAGGAGA" or "ctccaaggaga" in sample_sequence_df.values
+    assert "ATCCAGGAGA" or "atccaggaga" in sample_sequence_df.values
 
     # test tool's ability to find known nGRE in TSLP sequence
     TSLP_file = open("test_gene_sequences/TSLP.txt")
     TSLP_sequence = TSLP_file.read()
     TSLP_df = gene_nGRE_parse.regexSearch(TSLP_sequence, "TSLP", "chr18", "+")
     print(TSLP_df.values)
-    assert "CTCCAGGAGA" in TSLP_df.values
+    assert "CTCCAGGAGA" or "ctccaggaga" in TSLP_df.values
 
     # test tool's ability to find known nGRE in STAT1 sequence
     STAT1_file = open("test_gene_sequences/STAT1.txt")
     STAT1_sequence = STAT1_file.read()
     STAT1_df = gene_nGRE_parse.regexSearch(STAT1_sequence, "Stat1", "chr1", "+")
     print(STAT1_df.values)
-    assert "CTCCAGGACA" in STAT1_df.values
-    assert "CACCGGAGA" in STAT1_df.values
+    assert "CACCTGGAGA" or "cacctggaga" in STAT1_df.values
+    assert "CTCCAGGACA" or "ctccaggaca" in STAT1_df.values
 
 
 def test_nGRE_to_regex():
