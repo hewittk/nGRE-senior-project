@@ -8,7 +8,7 @@ import pandas as pd
 
 nGRE_consensus_sequence = "CTCCGGAGA"
 
-def regexSearch(gene_sequence, gene_id, chromosome, strand):
+def regex_search(gene_sequence, gene_id, chromosome, strand):
 	"""Find sequences and positions of relative matches to nGRE consensus sequence in gene."""
 
 	regex_start = time.time()
@@ -26,10 +26,10 @@ def regexSearch(gene_sequence, gene_id, chromosome, strand):
 	nGRE_sites = pd.DataFrame(columns = ["gene_id", "chromosome", "nGRE_sequence", "start_site", "end_site", "mutations", "mismatch_mutations", "insertion_mutations", "deletion_mutations"])
 	nGRE_list = []
 	nGRE_information_dict = {}
-	for nGRE_sequence in nonrepeat_matches:
+	for potential_nGRE in nonrepeat_matches:
 
 		# compare to perfect nGRE for error counts
-		comparison = (regex.search(r"((?e)[Cc][Tt][Cc][Cc][TAGCtagc]?[TAGCtagc]?[TAGCtagc]?[Gg][Gg][Aa][Gg][Aa]){e<=1}", nGRE_sequence))
+		comparison = (regex.search(r"((?e)[Cc][Tt][Cc][Cc][TAGCtagc]?[TAGCtagc]?[TAGCtagc]?[Gg][Gg][Aa][Gg][Aa]){e<=1}", potential_nGRE))
 		mutation_counts = comparison.fuzzy_counts
 		mismatch_count = int(mutation_counts[0])
 		insertion_count = int(mutation_counts[1])
@@ -38,29 +38,29 @@ def regexSearch(gene_sequence, gene_id, chromosome, strand):
 
 		# find all start/end locations of element
 		nGRE_locations = []
-		match_element_regex = regex.compile(nGRE_to_regex(nGRE_sequence))
-		for match_location in match_element_regex.finditer(gene_sequence):
-		    nGRE_locations.append([match_location.start(), match_location.end()])
+		potential_element_regex = regex.compile(nGRE_to_regex(potential_nGRE))
+		element_locations = find_element_locations(potential_element_regex, gene_sequence)
 
-		for location in nGRE_locations:
+
+		# add information about each of potential nGRE's location to dictionary
+		for location in element_locations:
 			nGRE_information_dict.clear()
 			nGRE_information_dict["start_site"] = location[0]
 			nGRE_information_dict["end_site"] = location[1]
 			nGRE_information_dict["gene_id"] = gene_id
 			nGRE_information_dict["chromosome"] = chromosome
-			nGRE_information_dict["nGRE_sequence"] = nGRE_sequence
+			nGRE_information_dict["nGRE_sequence"] = potential_nGRE
 			nGRE_information_dict["mutations"] = int(total_mutations)
 			nGRE_information_dict["mismatch_mutations"] = int(mismatch_count)
 			nGRE_information_dict["insertion_mutations"] = int(insertion_count)
 			nGRE_information_dict["deletion_mutations"] = int(deletion_count)
-			nGRE_sites = nGRE_sites.append(nGRE_information_dict, ignore_index = True)
+			nGRE_sites = nGRE_sites.append(nGRE_information_dict, ignore_index = True) # append nGRE to csv file dataframe
 
 	regex_end = time.time()
 	regex_runtime = regex_end - regex_start
 	print("Regex search completed, total runtime: {} seconds".format(regex_runtime))
 
 	return nGRE_sites
-
 
 def csv_parse(treatment, regulation):
 	"""Parse each gene for nGREs and record results in csv."""
@@ -77,14 +77,23 @@ def csv_parse(treatment, regulation):
 		interest_gene_sequence = file.read()
 
 		# record potential nGREs found in given gene sequence
-		potential_nGREs = regexSearch(interest_gene_sequence, gene_id, gene_chromosome, gene_strand)
-		potential_nGREs.to_csv("nGRE_parse_output/" + treatment + "/" + regulation + "_gene_output.csv", mode="a", index=False, header=False)
+		potential_nGREs = regex_search(interest_gene_sequence, gene_id, gene_chromosome, gene_strand)
+		potential_nGREs.to_csv("nGRE_parse_output/" + treatment + "/" + regulation + "test_gene_output.csv", mode="a", index=False, header=False)
 
-def nGRE_to_regex(nGRE_sequence):
+def find_element_locations(potential_nGRE_regex, gene_sequence):
+
+	potential_nGRE_locations = []
+
+	for match_location in potential_nGRE_regex.finditer(gene_sequence):
+	    potential_nGRE_locations.append([match_location.start(), match_location.end()])
+
+	return potential_nGRE_locations
+
+def nGRE_to_regex(potential_nGRE):
 	"""Convert each nucleotide in nGRE sequence into its regular expression representation."""
 
 	nGRE_sequence_regex = ""
-	for nucleotide in nGRE_sequence:
+	for nucleotide in potential_nGRE:
 		nGRE_sequence_regex += "["
 		nGRE_sequence_regex += nucleotide.upper() + nucleotide.lower()
 		nGRE_sequence_regex += "]"
