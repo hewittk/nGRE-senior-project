@@ -81,6 +81,8 @@ def csv_parse(treatment, regulation):
 		potential_nGREs.to_csv("nGRE_parse_output/" + treatment + "/" + regulation + "_gene_output.csv", mode="a", index=False, header=False)
 
 def nGRE_to_regex(nGRE_sequence):
+	"""Convert each nucleotide in nGRE sequence into its regular expression representation."""
+
 	nGRE_sequence_regex = ""
 	for nucleotide in nGRE_sequence:
 		nGRE_sequence_regex += "["
