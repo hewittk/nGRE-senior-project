@@ -2,6 +2,8 @@ import pytest
 import streamlit_site.custom_element_parse as custom_element_parse
 
 def test_nucleotide_bracket():
+    """Test casting of each nucleotide/letter in a string into bracket containing it in upper/lower case letters."""
+
     nGRE_halfsite1 = "CTCC"
     assert custom_element_parse.nucleotide_bracket(nGRE_halfsite1) == "[Cc][Tt][Cc][Cc]"
     nGRE_halfsite2 = "GGAGA"
@@ -16,6 +18,8 @@ def test_nucleotide_bracket():
     assert custom_element_parse.nucleotide_bracket(sample_element) == "[Aa][Cc][Aa][Gg][Tt][Aa][Cc][Cc][Cc][Aa][Aa][Aa][Tt]"
 
 def test_element_to_regex():
+    """Test conversion of an element containing nucleotides/IUPAC codes/numbers into its regular expression equivalent."""
+
     nGRE_sequence = "CTCC(N)(0-2)GGAGA"
     nGRE_sequence_regex = str(custom_element_parse.element_to_regex(nGRE_sequence))
     assert nGRE_sequence_regex == "[Cc][Tt][Cc][Cc]([AaCcTtGg]){0,2}[Gg][Gg][Aa][Gg][Aa]"
@@ -29,7 +33,20 @@ def test_element_to_regex():
     assert sample_seq_regex == "[Aa][Tt][Aa][Gg]([Cc][Aa]){4,6}[Aa][CcTt][Gg]"
 
 def test_sequence_search():
-    sample_nGRE_search = custom_element_parse.sequence_search("TAGTAGCATGGGATACAGCTCCGGGAGATAGCCTGATCATGGGCTCCAAGGAGAATGATCCAGGAGA", "[Cc][Tt][Cc][Cc]([AaCcTtGg]){0,2}[Gg][Gg][Aa][Gg][Aa]", 0)
-    assert "CTCCGGGAGA" in sample_nGRE_search
-    assert "CTCCAAGGAGA" in sample_nGRE_search
-    # assert "ATCCAGGAGA" not in sample_nGRE_search
+    """Test that sequence_search properly finds a given regular expression with up to a certain amount of errors within a sequence."""
+
+    m0_nGRE_search = custom_element_parse.sequence_search("TAGTAGCATGGGATACAGCTCCGGGAGATAGCCTGATCATGGGCTCCAAGGAGAATGATCCAGGAGA", "[Cc][Tt][Cc][Cc]([AaCcTtGg]){0,2}[Gg][Gg][Aa][Gg][Aa]", 0)
+    assert "CTCCGGGAGA" in m0_nGRE_search
+    assert "CTCCAAGGAGA" in m0_nGRE_search
+    assert "ATCCAGGAGA" not in m0_nGRE_search # assert doesn't return mutated nGRE in sequence
+
+    m1_nGRE_search = custom_element_parse.sequence_search("TAGTAGCATGGGATACAGCTCCGGGAGATAGCCTGATCATGGGCTCCAAGGAGAATGATCCAGGAGA", "[Cc][Tt][Cc][Cc]([AaCcTtGg]){0,2}[Gg][Gg][Aa][Gg][Aa]", 1)
+    assert "CTCCGGGAGA" in m1_nGRE_search
+    assert "CTCCAAGGAGA" in m1_nGRE_search
+    assert "ATCCAGGAGA" in m1_nGRE_search
+
+def test_iupac_handling():
+    """Test that iupac_handling replaces IUPAC codes with their nucleotide equivalents in the appropriate position of a gene sequence."""
+
+    sample_iupac_seq = custom_element_parse.iupac_handling("R",9,"[Aa][Cc][Rr]{1,3}[Gg]")
+    assert sample_iupac_seq == "[Aa][Cc][AaGg]{1,3}[Gg]"

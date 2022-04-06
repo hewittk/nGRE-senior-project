@@ -1,11 +1,11 @@
 import pytest
 import gene_nGRE_parse
 
-def test_regexSearch():
-    """Test regexSearch's ability to find and return matches to the nGRE consensus sequence within a gene sequence."""
+def test_regex_search():
+    """Test regex_search's ability to find and return matches to the nGRE consensus sequence within a gene sequence."""
     # test on generic sequence containg nGREs
     sample_sequence = "TAGTAGCATGGGATACAGCTCCGGGAGATAGCCTGATCATGGGCTCCAAGGAGAATGATCCAGGAGA"
-    sample_sequence_df = gene_nGRE_parse.regexSearch(sample_sequence, "sample", "chr18", "+")
+    sample_sequence_df = gene_nGRE_parse.regex_search(sample_sequence, "sample", "chr18", "+")
     print(sample_sequence_df.values)
     assert "CTCCGGGAGA" or "ctccgggaga" in sample_sequence_df.values
     assert "CTCCAAGGAGA" or "ctccaaggaga" in sample_sequence_df.values
@@ -14,14 +14,14 @@ def test_regexSearch():
     # test tool's ability to find known nGRE in TSLP sequence
     TSLP_file = open("test_gene_sequences/TSLP.txt")
     TSLP_sequence = TSLP_file.read()
-    TSLP_df = gene_nGRE_parse.regexSearch(TSLP_sequence, "TSLP", "chr18", "+")
+    TSLP_df = gene_nGRE_parse.regex_search(TSLP_sequence, "TSLP", "chr18", "+")
     print(TSLP_df.values)
     assert "CTCCAGGAGA" or "ctccaggaga" in TSLP_df.values
 
     # test tool's ability to find known nGRE in STAT1 sequence
     STAT1_file = open("test_gene_sequences/STAT1.txt")
     STAT1_sequence = STAT1_file.read()
-    STAT1_df = gene_nGRE_parse.regexSearch(STAT1_sequence, "Stat1", "chr1", "+")
+    STAT1_df = gene_nGRE_parse.regex_search(STAT1_sequence, "Stat1", "chr1", "+")
     print(STAT1_df.values)
     assert "CACCTGGAGA" or "cacctggaga" in STAT1_df.values
     assert "CTCCAGGACA" or "ctccaggaca" in STAT1_df.values

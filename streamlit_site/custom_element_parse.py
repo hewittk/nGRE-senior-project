@@ -40,7 +40,7 @@ def main():
         matches_df(matches, target_element, regex_element, gene_sequence, maximum_mutations, mismatch_penalty, insertion_penalty, deletion_penalty)
 
 def matches_df(matches, target_element, regex_element, gene_sequence, maximum_mutations, mismatch_penalty, insertion_penalty, deletion_penalty):
-    """Score matches to custom element based on amount of mutations."""
+    """Score matches to custom element based on amount of mutations and generate dataframe of scored sequences."""
 
     # obtain minimum length of target element to use as base score
     length = count_length(regex_element)
@@ -253,6 +253,7 @@ def count_length(regex_sequence):
 
     length = 0
     for i in range(len(regex_sequence)):
+        # add to length for each element group contained in brackets
         if(regex_sequence[i] == "]"):
             if((not(i+1 >= len(regex_sequence))) and (regex_sequence[i+1] != "?")):
                 length += 1
