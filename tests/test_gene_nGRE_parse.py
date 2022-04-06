@@ -3,6 +3,7 @@ import gene_nGRE_parse
 
 def test_regex_search():
     """Test regex_search's ability to find and return matches to the nGRE consensus sequence within a gene sequence."""
+    
     # test on generic sequence containg nGREs
     sample_sequence = "TAGTAGCATGGGATACAGCTCCGGGAGATAGCCTGATCATGGGCTCCAAGGAGAATGATCCAGGAGA"
     sample_sequence_df = gene_nGRE_parse.regex_search(sample_sequence, "sample", "chr18", "+")

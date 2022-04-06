@@ -48,5 +48,15 @@ def test_sequence_search():
 def test_iupac_handling():
     """Test that iupac_handling replaces IUPAC codes with their nucleotide equivalents in the appropriate position of a gene sequence."""
 
-    sample_iupac_seq = custom_element_parse.iupac_handling("R",9,"[Aa][Cc][Rr]{1,3}[Gg]")
-    assert sample_iupac_seq == "[Aa][Cc][AaGg]{1,3}[Gg]"
+    sample_purine_seq = custom_element_parse.iupac_handling("R",9,"[Aa][Cc][Rr]{1,3}[Gg]")
+    assert sample_purine_seq == "[Aa][Cc][AaGg]{1,3}[Gg]"
+
+    sample_n_seq = custom_element_parse.iupac_handling("N", 5, "[Cc][Nn][Aa][Gg][Gg][Gg]")
+    assert sample_n_seq == "[Cc][AaCcTtGg][Aa][Gg][Gg][Gg]"
+
+def test_count_length():
+    """Test that count_length properly returns the amount of non-optional characters in a regular expression."""
+
+    assert custom_element_parse.count_length("[Cc][Tt][Cc][Cc]([AaCcTtGg]){0,2}[Gg][Gg][Aa][Gg][Aa]") == 9
+    assert custom_element_parse.count_length("[Aa]?[Gg][Tt][Cc][Aa][Cc]?[Aa][Gg]?") == 5
+    assert custom_element_parse.count_length("[Aa][Gg][Cc][Aa]") == 4

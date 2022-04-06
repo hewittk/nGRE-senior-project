@@ -253,8 +253,29 @@ def count_length(regex_sequence):
 
     length = 0
     for i in range(len(regex_sequence)):
+        print("Counted element: " + regex_sequence[i])
         # add to length for each element group contained in brackets
         if(regex_sequence[i] == "]"):
             if((not(i+1 >= len(regex_sequence))) and (regex_sequence[i+1] != "?")):
                 length += 1
+            elif (i+1 >= len(regex_sequence)):
+                length += 1
+
+    # account for any zeros in regular expression
+    elements_before_zero = 0
+    total_elements_before_zeroes = 0
+    for i in range(len(regex_sequence)):
+        if(regex_sequence[i] == "0"):
+            print("Zero element found, index: " + str(i))
+            for j in range(i, 0, -1):
+                print("regex_sequence[j]: " + regex_sequence[j])
+                if(regex_sequence[j] == "]"):
+                    elements_before_zero += 1
+                if(regex_sequence[j] == "("):
+                    break
+        total_elements_before_zeroes += elements_before_zero
+        elements_before_zero = 0
+    print("Total elements before zeroes: " + str(total_elements_before_zeroes))
+    length -= total_elements_before_zeroes
+
     return length
