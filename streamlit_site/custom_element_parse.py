@@ -71,7 +71,7 @@ def matches_df(matches, target_element, regex_element, gene_sequence, maximum_mu
         total_mutations = mismatch_count + insertion_count + deletion_count
 
         # calculate score
-        score = 9 - insertion_penalty*(insertion_count) - deletion_penalty*(deletion_count) - mismatch_penalty*(mismatch_count)
+        score = length - insertion_penalty*(insertion_count) - deletion_penalty*(deletion_count) - mismatch_penalty*(mismatch_count)
 
         # find all start/end locations of element
         element_locations = []
@@ -80,6 +80,7 @@ def matches_df(matches, target_element, regex_element, gene_sequence, maximum_mu
             element_locations.append([match_location.start(), match_location.end()])
         st.write(element_locations)
 
+        # create match location's row in output dataframe
         for location in element_locations:
             element_information.clear()
             element_information["sequence"] = element
