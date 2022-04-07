@@ -56,13 +56,13 @@ def matches_df(matches, target_element, regex_element, gene_sequence, maximum_mu
 
     # score and add each element to dataframe
     element_table = pd.DataFrame(columns = ["sequence", "start", "end", "score", "mutations", "mismatch", "insertion", "deletion"])
-    match_element = ""
+    # match_element = ""
 
     element_information = {}
     for element in nonrepeat_matches:
 
         # find number of mutations in sequence
-        comparison = (regex.search(r"((?e)" + regex_element + "){e<=" + str(maximum_mutations) + "}", str(match_element)))
+        comparison = (regex.search(r"((?e)" + regex_element + "){e<=" + str(maximum_mutations) + "}", str(element)))
         print(comparison)
         mutation_counts = comparison.fuzzy_counts
         mismatch_count = mutation_counts[0]
@@ -75,14 +75,14 @@ def matches_df(matches, target_element, regex_element, gene_sequence, maximum_mu
 
         # find all start/end locations of element
         element_locations = []
-        p = regex.compile(element_to_regex(match_element))
+        p = regex.compile(element_to_regex(element))
         for match_location in p.finditer(gene_sequence):
             element_locations.append([match_location.start(), match_location.end()])
         st.write(element_locations)
 
         for location in element_locations:
             element_information.clear()
-            element_information["sequence"] = match_element
+            element_information["sequence"] = element
             element_information["start"] = location[0]
             element_information["end"] = location[1]
             element_information["score"] = score
@@ -194,6 +194,7 @@ def element_to_regex(element):
             subcomponent += character
         print(subcomponent)
 
+    print("element: " + element)
     if (element[len(element)-1]) != ")": # append last subcomponent if not in parantheses
         element_components.append(subcomponent)
     print("Subcomponent list: ", element_components)
