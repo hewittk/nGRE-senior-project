@@ -6,8 +6,8 @@ def main():
 
     st.write("Parse gene sequences for custom nuclear hormone response element or other subsequence")
 
-    regex_element = ""
     target_element = st.text_area("Insert target element to parse for")
+    regex_element = "" # regex equivalent of target element
 
     gene_sequence = st.text_area("Insert DNA sequence to search for target element in")
 
@@ -100,22 +100,24 @@ def sequence_search(gene_sequence, regex_element, maximum_mutations):
 
     print("Regex element in sequence search: " + regex_element)
 
-    # put regex element into python regex package's processing format
-    if(int(maximum_mutations) > 0): # process any potential mutations
+    # process any potential mutations
+    if(int(maximum_mutations) > 0):
         regex_element = "((?e)" + regex_element + "){e<=" + str(maximum_mutations) + "}"
     else:
         regex_element = "(" + regex_element + ")"
     print("Regex element after processing " + regex_element)
 
+    # only take first element if regex returns list with second element being spacer nucleotide
     if(type(regex_element) == list):
         regex_element = str(regex_element[0])
 
+    # find and report matches to element within gene sequence
     element_matches = regex.findall(str(regex_element), gene_sequence)
-
     print("Element matches: " + str(element_matches))
     st.write(element_matches)
     st.write(type(element_matches))
 
+    # only take first element if regex returns tuple with second element being spacer nucleotide
     for index in range(len(element_matches)):
         if type(element_matches[index]) == tuple:
             element_matches[index] = str(element_matches[index][0])
