@@ -60,3 +60,4 @@ def test_count_length():
     assert custom_element_parse.count_length("[Cc][Tt][Cc][Cc]([AaCcTtGg]){0,2}[Gg][Gg][Aa][Gg][Aa]") == 9
     assert custom_element_parse.count_length("[Aa]?[Gg][Tt][Cc][Aa][Cc]?[Aa][Gg]?") == 5
     assert custom_element_parse.count_length("[Aa][Gg][Cc][Aa]") == 4
+    assert custom_element_parse.count_length("[Aa][Gg][Cc][Aa]?") == 3
