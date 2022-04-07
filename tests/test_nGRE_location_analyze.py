@@ -2,6 +2,8 @@ import pytest
 import nGRE_location_analyze
 
 def test_retrieve_gene_sites():
+    """Test that retrieve_gene_sites retrieves the accurate transcription/coding start and end sites of a gene."""
+
     Pcmdt1_txStart, Pcmdt1_cdsStart, Pcmdt1_cdsEnd, Pcmdt1_txEnd = nGRE_location_analyze.retrieve_gene_sites("Pcmtd1_ENSMUST00000182306.1", "ADX_F_DexvsADX_F_Veh", "upregulated")
     assert Pcmdt1_txStart == 7089103
     assert Pcmdt1_cdsStart == 7089103
@@ -15,6 +17,8 @@ def test_retrieve_gene_sites():
     assert Mybl1_txEnd == 9700024
 
 def test_classify_sites():
+    """Test that relative transcription/coding start and end sites within a gene's retrievd sequence are properly calculated."""
+
     gene_id = "test"
     gene_txStart = 6245
     gene_cdStart = 6250
@@ -29,6 +33,8 @@ def test_classify_sites():
     assert relative_gene_txEnd == 31755
 
 def test_cumulate_sites():
+    """Test that cumulate_sites properly totals locations within genes that nGREs were found in."""
+
     nGRE_location_analyze.cumulate_sites(1000, 30000, 30000, 50000, 50006)
     nGRE_location_analyze.cumulate_sites(30000, 30000, 30000, 50000, 50006)
     print(nGRE_location_analyze.nGRE_locations["Pre transcription start site"])
