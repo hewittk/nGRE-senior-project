@@ -9,6 +9,7 @@ with open("test_gene_sequences/TSLP.txt", "w") as file:
     file.write(TSLP_sequence)
     file.close()
 
+# retrieve STAT1 sequence from 30000 before start site to 5000 after end site
 STAT1_request = requests.get("http://api.genome.ucsc.edu/getData/sequence?genome=mm9;chrom=chr1;start=52034034;end=52110508")
 print("Status Code: ", STAT1_request.status_code)
 STAT1_response = STAT1_request.json()
