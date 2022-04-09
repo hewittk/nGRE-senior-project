@@ -56,7 +56,6 @@ def matches_df(matches, target_element, regex_element, gene_sequence, maximum_mu
 
     # score and add each element to dataframe
     element_table = pd.DataFrame(columns = ["sequence", "start", "end", "score", "mutations", "mismatch", "insertion", "deletion"])
-    # match_element = ""
 
     element_information = {}
     for element in nonrepeat_matches:
