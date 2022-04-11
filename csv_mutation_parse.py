@@ -9,7 +9,7 @@ def fewer_mutations_parse(treatment, regulation):
 
     df = pd.read_csv("nGRE_parse_output/" + treatment + "/" + regulation + "_gene_output.csv")
 
-    # trackers for how many genes in subset have zero or one mutations
+    # numbers of genes with zero or one mutations
     zero_mutation_subsequences = 0
     one_mutation_subsequences = 0
 
