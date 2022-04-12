@@ -32,7 +32,7 @@ def csv_parse(treatment, regulation):
 
 def main():
     treatment = "ADX_F_DexvsADX_F_Veh"
-    regulation = "upregulated"
+    regulation = "downregulated"
     potential_nGREs = csv_parse(treatment, regulation)
 
     potential_nGREs.to_csv("nGRE_parse_output/" + treatment + "/" + regulation + "_promoter_gene_output.csv", mode="w", index=False, header=False)
