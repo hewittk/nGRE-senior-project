@@ -1,0 +1,24 @@
+In the OVX_ADX_F_DexvsOVX_ADX_F_Veh upregulated dataset (length 731698 genes):
+Number of potential nGREs with zero mutations found:  11843
+Percent of genes containing nGREs with zero mutations in promoter region:  1.62 %
+Number of potential nGREs with one mutation found:  343704
+Percent of genes containing nGREs with one mutation in promoter region:  46.97 %
+ 
+In the OVX_ADX_F_DexvsOVX_ADX_F_Veh downregulated dataset (length 631817 genes):
+Number of potential nGREs with zero mutations found:  10777
+Percent of genes containing nGREs with zero mutations in promoter region:  1.71 %
+Number of potential nGREs with one mutation found:  311209
+Percent of genes containing nGREs with one mutation in promoter region:  49.26 %
+ 
+In the ADX_F_DexvsADX_F_Veh upregulated dataset (length 548584 genes):
+Number of potential nGREs with zero mutations found in promoter region:  8730
+Percent of genes containing nGREs with zero mutations in promoter region:  1.59 %
+Number of potential nGREs with one mutation found in promoter region:  262489
+Percent of genes containing nGREs with one mutation in promoter region:  47.85 %
+ 
+In the ADX_F_DexvsADX_F_Veh downregulated dataset (length 479827 genes):
+Number of potential nGREs with zero mutations found in promoter region:  7715
+Percent of genes containing nGREs with zero mutations in promoter region:  1.61 %
+Number of potential nGREs with one mutation found in promoter region:  218971
+Percent of genes containing nGREs with one mutation in promoter region:  45.64 %
+ 

@@ -28,12 +28,9 @@ def main():
          ('1', '2', '3', '0')))
 
     if(target_element):
-        st.write(target_element)
         regex_element = element_to_regex(target_element)
 
         print("Regex element in main: " + regex_element)
-
-        st.write(gene_sequence)
 
         matches = sequence_search(gene_sequence, regex_element, maximum_mutations)
 
@@ -52,7 +49,6 @@ def matches_df(matches, target_element, regex_element, gene_sequence, maximum_mu
         if match not in nonrepeat_matches:
             nonrepeat_matches.append(match)
     print("nonrepeat_matches: " + str(nonrepeat_matches))
-    st.write(nonrepeat_matches)
 
     # score and add each element to dataframe
     element_table = pd.DataFrame(columns = ["sequence", "start", "end", "score", "mutations", "mismatch", "insertion", "deletion"])
@@ -77,7 +73,6 @@ def matches_df(matches, target_element, regex_element, gene_sequence, maximum_mu
         p = regex.compile(element_to_regex(element))
         for match_location in p.finditer(gene_sequence):
             element_locations.append([match_location.start(), match_location.end()])
-        st.write(element_locations)
 
         # create match location's row in output dataframe
         for location in element_locations:
@@ -114,8 +109,6 @@ def sequence_search(gene_sequence, regex_element, maximum_mutations):
     # find and report matches to element within gene sequence
     element_matches = regex.findall(str(regex_element), gene_sequence)
     print("Element matches: " + str(element_matches))
-    st.write(element_matches)
-    st.write(type(element_matches))
 
     # only take first element if regex returns tuple with second element being spacer nucleotide
     for index in range(len(element_matches)):
