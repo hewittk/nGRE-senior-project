@@ -2,6 +2,7 @@ import nGRE_parse
 import custom_element_parse
 import streamlit as st
 import about_tool
+from PIL import Image
 
 PAGES = {
     "About tool": about_tool,
