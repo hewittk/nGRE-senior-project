@@ -23,5 +23,5 @@ def main():
 
     st.write("") # spacer
 
-    st.image("images/IUPAC.png")
+    st.image("IUPAC.png")
     st.write("Bases that can be represented by one of two or more nucleotides can by represented in custom elements in the form of International Union of Pure and Applied Chemistry (IUPAC) codes as listed above. This image was retrieved from the George Mason University paper [Effective Automated Feature Construction and Selection for Classification of Biological Sequences](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4102475/) in a reformatted version of the original IUPAC codes table published by the [Nomenclature Committee of the International Union of Biochemistry](https://pubmed.ncbi.nlm.nih.gov/2417239/). A cropped version of the original image was redistributed on this page via the [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/)")
