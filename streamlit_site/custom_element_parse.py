@@ -4,6 +4,7 @@ import pandas as pd
 
 def main():
 
+    st.title("Custom Element Parsing")
     st.write("Parse gene sequences for custom nuclear hormone response element or other subsequence")
 
     target_element = st.text_area("Insert target element to parse for")
@@ -12,7 +13,7 @@ def main():
     gene_sequence = st.text_area("Insert DNA sequence to search for target element in")
 
     maximum_mutations = int(st.selectbox(
-        'What is the maximum number of mutations in the nGRE consensus sequence that you want to tolerate?',
+        'What is the maximum number of mutations in the target element sequence that you want to tolerate?',
         ('0', '1', '2', '3')))
 
     mismatch_penalty = int(st.selectbox(

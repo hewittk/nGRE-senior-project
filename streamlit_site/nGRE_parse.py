@@ -11,7 +11,8 @@ def main():
     global insertion_penalty
     global deletion_penalty
 
-    st.write("Parse gene sequences for nGREs")
+    st.title("nGRE Parsing")
+    st.write("Parse gene sequence for negative glucocorticoid response elements (nGREs)")
 
     gene_sequence = st.text_area("Insert DNA sequence to parse for nGREs")
 

@@ -1,8 +1,10 @@
 import nGRE_parse
 import custom_element_parse
 import streamlit as st
+import about_tool
 
 PAGES = {
+    "About tool": about_tool,
     "nGRE parsing": nGRE_parse,
     "Custom element parsing": custom_element_parse
 }
