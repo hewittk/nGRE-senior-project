@@ -1,24 +1,24 @@
-In the OVX_ADX_F_DexvsOVX_ADX_F_Veh upregulated dataset (length 14763 ENSEMBLE trancsription gene ids):
-Number of potential nGREs with zero mutations found in promoter region:  11843
-Percent of ENSEMBLE trancsription gene ids containing nGREs with zero mutations in promoter region:  80.22 %
+In the OVX_ADX_F_DexvsOVX_ADX_F_Veh upregulated dataset (length 2578 genes):
+Number of potential nGREs with zero mutations found in promoter region:  1491
+Percent of genes containing nGREs with zero mutations in promoter region:  67.3 %
 Number of potential nGREs with one mutation found in promoter region:  343704
-Percent of ENSEMBLE trancsription gene ids containing nGREs with one mutation in promoter region:  2328.14 %
+Percent of genes containing nGREs with one mutation in promoter region:  2328.14 %
  
-In the OVX_ADX_F_DexvsOVX_ADX_F_Veh downregulated dataset (length 12559 ENSEMBLE trancsription gene ids):
-Number of potential nGREs with zero mutations found in promoter region:  10777
-Percent of ENSEMBLE trancsription gene ids containing nGREs with zero mutations in promoter region:  85.81 %
+In the OVX_ADX_F_DexvsOVX_ADX_F_Veh downregulated dataset (length 2355 genes):
+Number of potential nGREs with zero mutations found in promoter region:  1334
+Percent of genes containing nGREs with zero mutations in promoter region:  65.14 %
 Number of potential nGREs with one mutation found in promoter region:  311209
-Percent of ENSEMBLE trancsription gene ids containing nGREs with one mutation in promoter region:  2477.98 %
+Percent of genes containing nGREs with one mutation in promoter region:  2477.98 %
  
-In the ADX_F_DexvsADX_F_Veh upregulated dataset (length 11665 ENSEMBLE trancsription gene ids):
-Number of potential nGREs with zero mutations found in promoter region:  8730
-Percent of ENSEMBLE trancsription gene ids containing nGREs with zero mutations in promoter region:  74.84 %
+In the ADX_F_DexvsADX_F_Veh upregulated dataset (length 2024 genes):
+Number of potential nGREs with zero mutations found in promoter region:  1040
+Percent of genes containing nGREs with zero mutations in promoter region:  65.61 %
 Number of potential nGREs with one mutation found in promoter region:  262489
-Percent of ENSEMBLE trancsription gene ids containing nGREs with one mutation in promoter region:  2250.23 %
+Percent of genes containing nGREs with one mutation in promoter region:  2250.23 %
  
-In the ADX_F_DexvsADX_F_Veh downregulated dataset (length 8585 ENSEMBLE trancsription gene ids):
-Number of potential nGREs with zero mutations found in promoter region:  7715
-Percent of ENSEMBLE trancsription gene ids containing nGREs with zero mutations in promoter region:  89.87 %
+In the ADX_F_DexvsADX_F_Veh downregulated dataset (length 1582 genes):
+Number of potential nGREs with zero mutations found in promoter region:  981
+Percent of genes containing nGREs with zero mutations in promoter region:  68.46 %
 Number of potential nGREs with one mutation found in promoter region:  218971
-Percent of ENSEMBLE trancsription gene ids containing nGREs with one mutation in promoter region:  2550.62 %
+Percent of genes containing nGREs with one mutation in promoter region:  2550.62 %
  
