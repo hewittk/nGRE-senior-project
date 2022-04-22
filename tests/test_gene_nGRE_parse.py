@@ -1,4 +1,6 @@
 import pytest
+import regex
+
 import gene_nGRE_parse
 
 def test_regex_search():
@@ -43,3 +45,12 @@ def test_nGRE_to_regex():
     assert gene_nGRE_parse.nGRE_to_regex(insertion_mutation_nGRE) == "[Cc][Tt][Cc][Cc][Gg][Gg][Aa][Gg][Cc][Aa]"
     deletion_mutation_nGRE = "CTCGGAGA"
     assert gene_nGRE_parse.nGRE_to_regex(deletion_mutation_nGRE) == "[Cc][Tt][Cc][Gg][Gg][Aa][Gg][Aa]"
+
+def test_find_element_locations():
+    """Test find_element_locations' detection of correct locations within gene sequence of all nGREs."""
+
+    gene_sequence = "TAGTAGCATGGGATACAGCTCCGGGAGATAGCCTGATCATGGGCTCCAAGGAGAATGATCCAGGAGACTCCAAGGAGACTCG"
+    target_nGRE = "CTCCAAGGAGA"
+    target_nGRE_regex = regex.compile(gene_nGRE_parse.nGRE_to_regex(target_nGRE))
+
+    assert gene_nGRE_parse.find_element_locations(target_nGRE_regex, gene_sequence) == [[43,54], [67,78]]
