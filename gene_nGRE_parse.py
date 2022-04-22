@@ -81,6 +81,7 @@ def csv_parse(treatment, regulation):
 		potential_nGREs.to_csv("nGRE_parse_output/" + treatment + "/" + regulation + "test_gene_output.csv", mode="a", index=False, header=False)
 
 def find_element_locations(potential_nGRE_regex, gene_sequence):
+	"""Find the start/end positions within the gene sequence of all matches found to the nGRE consensus sequence."""
 
 	potential_nGRE_locations = []
 

@@ -25,7 +25,6 @@ def test_regex_search():
     assert "CACCTGGAGA" or "cacctggaga" in STAT1_df.values
     assert "CTCCAGGACA" or "ctccaggaca" in STAT1_df.values
 
-
 def test_nGRE_to_regex():
     """Test nGRE_to_regex's casting gene sequence's nucleotides into regex format."""
 
