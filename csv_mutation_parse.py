@@ -24,16 +24,19 @@ def fewer_mutations_parse(treatment, regulation):
 
     with open('nGRE_parse_output/all_regions_fewer_mutations_parse_statistics.txt', 'a') as output_file:
         print("In the " + treatment + " " + regulation + " dataset (length " + str(len(gene_name_set)) + " genes):", file = output_file)
+
+        # amount of genes with zero mutations
         zero_mutations = all_regions_df.loc[all_regions_df['mutations'] == 0]
         number_zero_mutations, percent_zero_mutations = find_nGRE_amounts(zero_mutations, genes_df, gene_name_set)
-        print("Number of potential nGREs with zero mutations found in promoter region: ", number_zero_mutations, file = output_file)
+        print("Number of potential nGREs with zero mutations found in all regions: ", number_zero_mutations, file = output_file)
         print(number_zero_mutations)
-        print("Percent of ENSEMBLE trancsription gene ids containing nGREs with zero mutations in promoter region: ", str(percent_zero_mutations), "%", file = output_file)
+        print("Percent of genes containing nGREs with zero mutations in all regions: ", str(percent_zero_mutations), "%", file = output_file)
 
-        one_mutation = all_regions_df.loc[all_regions_df['mutations'] == 1]
-        print("Number of potential nGREs with one mutation found in promoter region: ", len(one_mutation), file = output_file)
-        percent_one_mutations = round(((len(one_mutation)/len(genes_df)) * 100),2)
-        print("Percent of ENSEMBLE trancsription gene ids containing nGREs with one mutation in promoter region: ", str(percent_one_mutations), "%", file = output_file)
+        # amount of genes with one mutation
+        one_mutations = all_regions_df.loc[all_regions_df['mutations'] == 1]
+        print("Number of potential nGREs with one mutation found in all regions: ", len(one_mutations), file = output_file)
+        number_one_mutations, percent_one_mutations = find_nGRE_amounts(one_mutations, genes_df, gene_name_set)
+        print("Percent of genes containing nGREs with one mutation in all regions: ", str(percent_one_mutations), "%", file = output_file)
         print(" ", file = output_file)
 
 def find_nGRE_amounts(nGRE_df, all_genes_df, gene_name_set):
@@ -82,6 +85,7 @@ def find_nGRE_amounts(nGRE_df, all_genes_df, gene_name_set):
     for gene in gene_name_set:
         if gene in locations_dict:
             nGRE_genes += 1
+            print("Gene: " + gene + " nGRE genes: " + str(nGRE_genes))
     percent_nGRE_genes = round((nGRE_genes/len(gene_name_set)*100),2)
 
     return total_nGREs, percent_nGRE_genes
