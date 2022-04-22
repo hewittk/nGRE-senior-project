@@ -34,8 +34,8 @@ def fewer_mutations_parse(treatment, regulation):
 
         # amount of genes with one mutation
         one_mutations = promoter_region_df.loc[promoter_region_df['mutations'] == 1]
-        print("Number of potential nGREs with one mutation found in all regions: ", len(one_mutations), file = output_file)
         number_one_mutations, percent_one_mutations = find_nGRE_amounts(one_mutations, genes_df, gene_name_set)
+        print("Number of potential nGREs with one mutation found in all regions: ", number_one_mutations, file = output_file)
         print("Percent of genes containing nGREs with one mutation in all regions: ", str(percent_one_mutations), "%", file = output_file)
         print(" ", file = output_file)
 
@@ -88,13 +88,13 @@ def find_nGRE_amounts(nGRE_df, all_genes_df, gene_name_set):
             print("Gene: " + gene + " nGRE genes: " + str(nGRE_genes))
     percent_nGRE_genes = round((nGRE_genes/len(gene_name_set)*100),2)
 
-    return total_nGREs, percent_nGRE_genes
+    return nGRE_genes, percent_nGRE_genes
 
 
 def main():
 
 	start = time.time()
-	fewer_mutations_parse("ADX_F_DexvsADX_F_Veh", "downregulated")
+	fewer_mutations_parse("OVX_ADX_F_DexvsOVX_ADX_F_Veh", "downregulated")
 	end = time.time()
 
 	runtime = end - start
