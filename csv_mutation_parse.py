@@ -6,7 +6,7 @@ import pandas as pd
 import regex
 
 def fewer_mutations_parse(treatment, regulation):
-    """Parse nGRE sequence matches csv file and return all that have up to maximum number of mutations."""
+    """Parse nGRE sequence matches csv file and return all that have zero or one mutations."""
 
     # dataset containing information about each gene/ENMUST ID
     genes_df = pd.read_csv("annotated_gene_datasets/" + treatment + "/" + regulation + "_genes/" + regulation + "_output_with_gene_names_known_sequences.tsv", sep = "\t", index_col=False)
