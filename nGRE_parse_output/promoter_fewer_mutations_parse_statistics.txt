@@ -21,3 +21,4 @@ Number of potential nGREs with zero mutations found in all regions:  1083
 Percent of genes containing nGREs with zero mutations in all regions:  68.46 %
 Number of potential nGREs with one mutation found in all regions:  1582
 Percent of genes containing nGREs with one mutation in all regions:  100.0 %
+ 

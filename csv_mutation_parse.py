@@ -5,8 +5,14 @@ import time
 import pandas as pd
 import regex
 
-def fewer_mutations_parse(treatment, regulation):
+treatment = ""
+regulation = ""
+
+def fewer_mutations_parse():
     """Parse nGRE sequence matches csv file and return all that have zero or one mutations."""
+
+    global treatment
+    global regulation
 
     # dataset containing information about each gene/ENMUST ID
     genes_df = pd.read_csv("annotated_gene_datasets/" + treatment + "/" + regulation + "_genes/" + regulation + "_output_with_gene_names_known_sequences.tsv", sep = "\t", index_col=False)
@@ -15,8 +21,8 @@ def fewer_mutations_parse(treatment, regulation):
     gene_name_set = set(gene_name_list)
 
     # dataset containing information about nGREs found
-    promoter_region_df = pd.read_csv("nGRE_parse_output/" + treatment + "/" + regulation + "_gene_output.csv", index_col=False) # nGREs in all regions of gene
     promoter_region_df = pd.read_csv("nGRE_parse_output/" + treatment + "/" + regulation + "_promoter_gene_output.csv", index_col=False) # nGREs in promoter region of gene
+    all_region_df = pd.read_csv("nGRE_parse_output/" + treatment + "/" + regulation + "_gene_output.csv", index_col=False) # nGREs in all regions of gene
 
     # numbers of genes with zero or one mutations
     zero_mutation_subsequences = 0
@@ -41,10 +47,19 @@ def fewer_mutations_parse(treatment, regulation):
 
 def find_nGRE_amounts(nGRE_df, all_genes_df, gene_name_set):
     """Find total numbers of nGREs and proportion of genes in dataset containing nGREs."""
-    # make dictionary of lists of nGRE locations for each gene
+
+    global treatment
+    global regulation
+
+    # initialize dictionary of lists of nGRE locations for each gene
     locations_dict = {}
     nGRE_df = nGRE_df.reset_index()
 
+    # initialize dictionary of genes containing the highest numbers of nGREs
+    highest_nGRE_genes = {}
+
+
+    # parse each gene for nGREs
     total_nGREs = 0 # nGRE counter
     for column in range(len(nGRE_df)):
 
@@ -72,7 +87,7 @@ def find_nGRE_amounts(nGRE_df, all_genes_df, gene_name_set):
         # find non-relative, chromosomal start site of given nGRE
         chromosomal_nGRE_start = txStart + (relative_nGRE_start - 30000)
 
-        # add to total if not already added to total for that gene
+        # add each nGRE found to location_dict
         if gene_name in locations_dict:
             if chromosomal_nGRE_start not in locations_dict[gene_name]:
                 locations_dict[gene_name].append(chromosomal_nGRE_start)
@@ -80,12 +95,37 @@ def find_nGRE_amounts(nGRE_df, all_genes_df, gene_name_set):
         else:
             locations_dict[gene_name] = [chromosomal_nGRE_start]
 
+        if (gene_id == "Lipg" or gene_id == "Pstpip2" or gene_id == "Banf1" or gene_id == "Yif1a"):
+            print(gene_id)
+            print(locations_dict)
+
+        # check if gene is eligible to be added to top 100 genes containing the most nGREs
+        if (len(highest_nGRE_genes) < 100): # automatically add first 100 genes
+            highest_nGRE_genes[gene_name] = len(locations_dict[gene_name])
+        else:
+            for standing_gene in highest_nGRE_genes:
+                if(len(locations_dict[gene_name]) > highest_nGRE_genes[standing_gene]):
+                    # remove standing gene in highest_nGRE_genes that has less
+                    highest_nGRE_genes.pop(standing_gene)
+                    # add current gene containing more nGREs
+                    highest_nGRE_genes[gene_name] = len(locations_dict[gene_name])
+                    break
+
+    # write genes found with the most nGREs to a file
+    with open('nGRE_parse_output/' + treatment + '/' + regulation + '_promoter_top100_nGRE_genes.txt', 'w') as output_file:
+        for gene in highest_nGRE_genes:
+            print(gene + ": " + str(highest_nGRE_genes[gene]), file = output_file)
+
+    with open('nGRE_parse_output/' + treatment + '/' + regulation + '_list_promoter_top100_nGRE_genes.txt', 'w') as output_file:
+        for gene in highest_nGRE_genes:
+            print(gene, file = output_file)
+
     # divide total number of nGREs found by amount of genes in dataset
     nGRE_genes = 0
     for gene in gene_name_set:
         if gene in locations_dict:
             nGRE_genes += 1
-            print("Gene: " + gene + " nGRE genes: " + str(nGRE_genes))
+            # print("Gene: " + gene + " nGRE genes: " + str(nGRE_genes))
     percent_nGRE_genes = round((nGRE_genes/len(gene_name_set)*100),2)
 
     return nGRE_genes, percent_nGRE_genes
@@ -93,12 +133,18 @@ def find_nGRE_amounts(nGRE_df, all_genes_df, gene_name_set):
 
 def main():
 
-	start = time.time()
-	fewer_mutations_parse("OVX_ADX_F_DexvsOVX_ADX_F_Veh", "downregulated")
-	end = time.time()
+    global treatment
+    global regulation
 
-	runtime = end - start
-	print("Total runtime: {} seconds".format(runtime))
+    treatment = "ADX_F_DexvsADX_F_Veh"
+    regulation = "downregulated"
+
+    start = time.time()
+    fewer_mutations_parse()
+    end = time.time()
+
+    runtime = end - start
+    print("Total runtime: {} seconds".format(runtime))
 
 
 if __name__ == "__main__":
