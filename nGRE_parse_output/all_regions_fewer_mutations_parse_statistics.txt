@@ -1,24 +1,24 @@
 In the OVX_ADX_F_DexvsOVX_ADX_F_Veh upregulated dataset (length 2578 genes):
-Number of potential nGREs with zero mutations found in all regions:  2992
+Number of potential nGREs with zero mutations found in all regions:  1972
 Percent of genes containing nGREs with zero mutations in all regions:  76.49 %
-Number of potential nGREs with one mutation found in all regions:  708764
+Number of potential nGREs with one mutation found in all regions:  2578
 Percent of genes containing nGREs with one mutation in all regions:  100.0 %
- 
+
 In the OVX_ADX_F_DexvsOVX_ADX_F_Veh downregulated dataset (length 2355 genes):
-Number of potential nGREs with zero mutations found in all regions:  2802
+Number of potential nGREs with zero mutations found in all regions:  1774
 Percent of genes containing nGREs with zero mutations in all regions:  75.33 %
-Number of potential nGREs with one mutation found in all regions:  611250
+Number of potential nGREs with one mutation found in all regions:  2355
 Percent of genes containing nGREs with one mutation in all regions:  100.0 %
- 
+
 In the ADX_F_DexvsADX_F_Veh upregulated dataset (length 2024 genes):
-Number of potential nGREs with zero mutations found in all regions:  2131
+Number of potential nGREs with zero mutations found in all regions:  1531
 Percent of genes containing nGREs with zero mutations in all regions:  75.64 %
-Number of potential nGREs with one mutation found in all regions:  531680
+Number of potential nGREs with one mutation found in all regions:  2024
 Percent of genes containing nGREs with one mutation in all regions:  100.0 %
- 
+
 In the ADX_F_DexvsADX_F_Veh downregulated dataset (length 1582 genes):
-Number of potential nGREs with zero mutations found in all regions:  2168
+Number of potential nGREs with zero mutations found in all regions:  1243
 Percent of genes containing nGREs with zero mutations in all regions:  78.57 %
-Number of potential nGREs with one mutation found in all regions:  464144
+Number of potential nGREs with one mutation found in all regions:  1582
 Percent of genes containing nGREs with one mutation in all regions:  100.0 %
  

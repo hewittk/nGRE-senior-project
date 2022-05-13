@@ -31,7 +31,7 @@ def csv_parse(treatment, regulation):
     return promoter_nGRE_sites
 
 def main():
-    treatment = "ADX_F_DexvsADX_F_Veh"
+    treatment = "OVX_ADX_F_DexvsOVX_ADX_F_Veh"
     regulation = "downregulated"
     potential_nGREs = csv_parse(treatment, regulation)
 
